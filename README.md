@@ -51,11 +51,11 @@ Customization
 Setup
 -----
 
-This mainly follows the r10k documentation...
+This mainly follows the r10k documentation and [jtopjian's post](http://terrarum.net/administration/puppet-infrastructure-with-r10k.html).
 
 1. In the "main" section of ``/etc/puppet/puppet.conf``,
    set ``modulepath = $confdir/environments/$environment/modules:$confdir/environments/$environment/``
-   and ``manifest = $confdir/environments/$environment/site/manifests/site.pp``
+   and ``manifest = $confdir/environments/$environment/manifests/nodes.pp``
 2. Create ``/etc/r10k.yaml`` with the following contents, replacing ``https://github.com/jantman/workstation-bootstrap``
    with the URL to your fork.
 
