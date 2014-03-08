@@ -43,7 +43,9 @@ Customization
 -------------
 
 1. Fork this repository. Make sure that the "production" branch is the primary branch.
-2. Edit the files under ``manifests/`` to do what you want.
+2. Edit the files under ``manifests/`` to do what you want. The majority of configuration is triggered by
+   ``manifests/site.pp``, which I use to pull in default bits of configuration, plus distro- and hardware-specific
+   bits.
 3. Add or remove modules in the ``Puppetfile`` as necessary, replacing ``jantman/privatepuppet`` with
    your own private puppet module, if needed.
 4. Use as per the Usage instructions below.
@@ -55,18 +57,24 @@ This mainly follows the r10k documentation and [jtopjian's post](http://terrarum
 
 1. In the "main" section of ``/etc/puppet/puppet.conf``,
    set ``modulepath = $confdir/environments/$environment/modules:$confdir/environments/$environment/``
-   and ``manifest = $confdir/environments/$environment/manifests/nodes.pp``
+   and ``manifest = $confdir/environments/$environment/manifests/site.pp``
 2. Create ``/etc/r10k.yaml`` with the following contents, replacing ``https://github.com/jantman/workstation-bootstrap``
    with the URL to your fork.
 
-    ---
-    :cachedir: /var/cache/r10k
-    :sources:
-      :local:
-        remote: https://github.com/jantman/workstation-bootstrap
-        basedir: /etc/puppet/environments
+```
+---
+:cachedir: /var/cache/r10k
+:sources:
+  :local:
+    remote: https://github.com/jantman/workstation-bootstrap
+    basedir: /etc/puppet/environments
+```
 
 3. Do the first/initial r10k run to pull in all of the correct modules: ``r10k deploy environment -p``
 
 Usage
 -----
+
+1. Deploy your modules/manifests: ``r10k deploy environment -p``
+2. Run puppet: ``puppet apply /etc/puppet/environments/production/manifests/site.pp``
+3. Iterate as needed.
