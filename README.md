@@ -36,6 +36,8 @@ Distro-specific instructions follow.
 6. ``pacman -S base-devel`` for required packages to build puppet, ruby, etc.
 7. Install Puppet via yaourt: ``yaourt -S puppet ruby-augeas``
 8. Install r10k via yaourt: ``yaourt -S ruby-r10k``
+9. Install git: ``pacman -S git``
+10. Optionally, install vim, since vi is painful: ``pacman -S vim``
 
 Customization
 -------------
@@ -51,8 +53,20 @@ Setup
 
 This mainly follows the r10k documentation...
 
-1. In ``/etc/puppet/puppet.conf``, set ``modulepath = $confdir/environments/$environment/modules:$confdir/environments/$environment/``
+1. In the "main" section of ``/etc/puppet/puppet.conf``,
+   set ``modulepath = $confdir/environments/$environment/modules:$confdir/environments/$environment/``
    and ``manifest = $confdir/environments/$environment/site/manifests/site.pp``
+2. Create ``/etc/r10k.yaml`` with the following contents, replacing ``https://github.com/jantman/workstation-bootstrap``
+   with the URL to your fork.
+
+    ---
+    :cachedir: /var/cache/r10k
+    :sources:
+      :local:
+        remote: https://github.com/jantman/workstation-bootstrap
+        basedir: /etc/puppet/environments
+
+3. Do the first/initial r10k run to pull in all of the correct modules: ``r10k deploy environment -p``
 
 Usage
 -----
