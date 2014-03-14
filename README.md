@@ -36,7 +36,8 @@ Distro-specific instructions follow.
 5. Make sure everything is up to date: ``pacman -Syu``
 6. ``pacman -S base-devel`` for required packages to build puppet, ruby, etc.
 7. Install Puppet via yaourt: ``yaourt -S puppet ruby-augeas``
-8. Install r10k via yaourt: ``yaourt -S ruby-r10k``
+8. Install r10k via yaourt: ``yaourt -S ruby-r10k``. If yaourt installed ``ruby-cri``, and r10k still
+   requires 2.4.0, you'll need to install it: ``gem install cri -v 2.4.0``.
 9. Install git: ``pacman -S git``
 10. Optionally, install vim, since vi is painful: ``pacman -S vim``
 
@@ -77,5 +78,10 @@ Usage
 -----
 
 1. Deploy your modules/manifests: ``r10k deploy environment -p``
-2. Run puppet: ``puppet apply /etc/puppet/environments/production/manifests/site.pp``
-3. Iterate as needed.
+2. ``alias puppetize='puppet apply /etc/puppet/environments/production/manifests/site.pp'``
+3. ``puppetize``
+4. Iterate as needed. Re-run occasionally.
+5. If you don't make any root (or outside your homedir) changes outside of puppet, ever,
+   you'll always be able to rebuild your machine after failure or when you get a new one.
+   Now you can finally stop backing up everything but your homedir (and your github, of course...).
+
