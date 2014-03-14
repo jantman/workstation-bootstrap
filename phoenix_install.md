@@ -40,10 +40,10 @@ the Arch install process.
 ## Arch Installation
 
 Disks:
-* __/dev/sda__ - wwn-0x50014ee25a2ec62d / 1DE43174-5EAE-407F-BDC0-547ACB961641
-* __/dev/sdb__ - wwn-0x50014ee05674a5ad /
-* __/dev/sdc__ - wwn-0x50014ee0abde23c5 /
-* __/dev/sdd__ - wwn-0x50014ee25702509d / 
+* __/dev/sda__ - wwn-0x50014ee25a2ec62d / 1de43174-5eae-407f-bdc0-547acb961641
+* __/dev/sdb__ - wwn-0x50014ee05674a5ad / 00053c0e
+* __/dev/sdc__ - wwn-0x50014ee0abde23c5 / 0005d421
+* __/dev/sdd__ - wwn-0x50014ee25702509d / 9043b14f
 
 1. ``gdisk /dev/sda``
    1. sda1 - 4G ef00 EFI System partition (/boot)
