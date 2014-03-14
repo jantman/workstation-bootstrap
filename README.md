@@ -27,7 +27,8 @@ Distro-specific instructions follow.
 
 1. Do a default, base install of Arch (i.e. see instructions in
    [puppet-archlinux-macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina)
-   or the [Arch Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)).
+   or the [Arch Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide), or
+   [phoenix_install.md](phoenix_install.md) documenting my latest desktop machine build/install).
 2. ``dhcpcd <interface name>`` to get minimally-working DHCP.
 3. ``pacman -S openssh && systemctl start sshd`` so you can work remotely...
 4. ``vi /etc/pacman.conf`` and add the [archlinuxfr](http://archlinux.fr/yaourt-en) repository,
