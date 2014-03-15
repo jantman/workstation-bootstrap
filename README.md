@@ -1,5 +1,15 @@
-workstation-bootstrap
-=====================
+####Table of Contents
+
+1. [Overview](#overview)
+2. [Prerequisites](#prerequisites)
+    * [General](#general)
+	* [Arch Linux](#arch-linux)
+3. [Customization](#customization)
+4. [Setup](#setup)
+5. [Usage](#usage)
+
+
+##Overview
 
 This is my [r10k](https://github.com/adrienthebo/r10k)-based Puppet management of my personal boxes (desktop and laptop).
 It aims to let me configure my personal boxes with Puppet, and maintain more or less the same environment (installed packages,
@@ -9,10 +19,9 @@ The general concept is that this repository, managed by r10k, provides some gene
 module on my MacBook Retina) and whatever other public modules are needed, as well as applying a private module for anything
 incredibly specific to me, or sensitive parts of configuration.
 
-Prerequisites
--------------
+##Prerequisites
 
-### General
+###General
 
 To use this, you'll need:
 
@@ -23,7 +32,7 @@ To use this, you'll need:
 
 Distro-specific instructions follow.
 
-### Arch Linux
+###Arch Linux
 
 1. Do a default, base install of Arch (i.e. see instructions in
    [puppet-archlinux-macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina)
@@ -39,10 +48,10 @@ Distro-specific instructions follow.
 8. Install r10k via yaourt: ``yaourt -S ruby-r10k``. If yaourt installed ``ruby-cri``, and r10k still
    requires 2.4.0, you'll need to install it: ``gem install cri -v 2.4.0``.
 9. Install git: ``pacman -S git``
-10. Optionally, install vim, since vi is painful: ``pacman -S vim``
+10. Install lsb-release to get the lsb* Facter facts: ``pacman -S lsb-release``
+11. Optionally, install vim, since vi is painful: ``pacman -S vim``
 
-Customization
--------------
+##Customization
 
 1. Fork this repository. Make sure that the "production" branch is the primary branch.
 2. Edit the files under ``manifests/`` to do what you want. The majority of configuration is triggered by
@@ -52,8 +61,7 @@ Customization
    your own private puppet module, if needed.
 4. Use as per the Usage instructions below.
 
-Setup
------
+##Setup
 
 This mainly follows the r10k documentation and [jtopjian's post](http://terrarum.net/administration/puppet-infrastructure-with-r10k.html).
 
