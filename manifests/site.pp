@@ -3,17 +3,12 @@
 ###########################################################
 # global config - stuff that should be useful to everyone #
 ###########################################################
-if $::operatingsystem == 'Archlinux' or $::osfamily == 'Archlinux' or $::lsbdistid == 'Arch' {
+if $::osfamily == 'Archlinux' {
   # Arch-specific stuff
 
   if $::type == 'Notebook' or $::type == 'Portable' or $::type == 'LapTop' or $::type == 'Sub Notebook' {
     # Arch laptop specific
   }
-
-}
-
-if $::type == 'Notebook' or $::type == 'Portable' or $::type == 'LapTop' or $::type == 'Sub Notebook' {
-  # laptop, non-Arch-specific
 }
 
 if $::bios_version =~ 'MBP101.+' or $::productname == 'MacBookPro10,1' {
@@ -26,3 +21,4 @@ if $::bios_version =~ 'MBP101.+' or $::productname == 'MacBookPro10,1' {
 #################################################
 
 include jantman
+class {'privatepuppet': }
