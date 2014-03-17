@@ -11,7 +11,7 @@ if $::osfamily == 'Archlinux' {
   }
 }
 
-if $::bios_version =~ 'MBP101.+' or $::productname == 'MacBookPro10,1' {
+if $::bios_version =~ /^MBP101.+/ or $::productname == 'MacBookPro10,1' {
   # MacBookPro Retina 10,1-specific
 }
 
