@@ -80,7 +80,9 @@ This mainly follows the r10k documentation and [jtopjian's post](http://terrarum
     basedir: /etc/puppet/environments
 ```
 
-3. Do the first/initial r10k run to pull in all of the correct modules: ``r10k deploy environment -p``
+3. If you have any private modules (or use GitHub modules over git/ssh in your Puppetfile), generate
+   a SSH keypair for root on your new machine, and add them as deploy keys for your repository.
+4. Do the first/initial r10k run to pull in all of the correct modules: ``r10k deploy environment -p``
 
 Usage
 -----
