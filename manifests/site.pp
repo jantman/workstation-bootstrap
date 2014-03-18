@@ -4,12 +4,15 @@
 # configuration #
 #################
 
+$username = 'jantman'
+
 ###########################################
 # stuff that should be useful to everyone #
 ###########################################
 if $::osfamily == 'Archlinux' {
   # Arch-specific stuff
   class {'archlinux_workstation':
+    username  => $username,
   }
 
   if $::type == 'Notebook' or $::type == 'Portable' or $::type == 'LapTop' or $::type == 'Sub Notebook' {
