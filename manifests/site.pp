@@ -20,5 +20,5 @@ if $::bios_version =~ /^MBP101.+/ or $::productname == 'MacBookPro10,1' {
 #  or relatively custom                         #
 #################################################
 
-include jantman
+# my private stuff
 class {'privatepuppet': }
