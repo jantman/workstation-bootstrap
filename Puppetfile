@@ -13,6 +13,7 @@ forge 'forge.puppetlabs.com'
 
 mod 'puppetlabs/stdlib', '4.1.0'
 mod 'saz/sudo', '3.0.3' # dependency of archlinux_workstation
+mod 'saz/ssh', '2.3.3' # dependency of archlinux_workstation
 
 ##################
 # github modules #
