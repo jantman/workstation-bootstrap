@@ -4,9 +4,10 @@
 2. [Prerequisites](#prerequisites)
     * [General](#general)
 	* [Arch Linux](#arch-linux)
-3. [Customization](#customization)
-4. [Setup](#setup)
-5. [Usage](#usage)
+3. [Reference](#reference)
+4. [Customization](#customization)
+5. [Setup](#setup)
+6. [Usage](#usage)
 
 
 ##Overview
@@ -18,6 +19,8 @@ configuration) on both/all of them.
 The general concept is that this repository, managed by r10k, provides some general defaults (such as my archlinux-macbookretina
 module on my MacBook Retina) and whatever other public modules are needed, as well as applying a private module for anything
 incredibly specific to me, or sensitive parts of configuration.
+
+For information about everything this module does, see [Reference](#reference).
 
 ##Prerequisites
 
@@ -51,12 +54,22 @@ Distro-specific instructions follow.
 10. Install lsb-release to get the lsb* Facter facts: ``pacman -S lsb-release``
 11. Optionally, install vim, since vi is painful: ``pacman -S vim``
 
+##Reference
+
+This details the actions that this module takes, by default. To use it, follow the [Customization](#customization)
+instructions below.
+
+* Define an instance of my [archlinux_workstation](https://github.com/jantman/puppet-archlinux-workstation) module on
+  any node where ::osfamily is 'Archlinux'
+* Define an instance of my "privatepuppet" module on every node (which you should either remove, or replace with your
+  own private module for sensitive stuff).
+
 ##Customization
 
 1. Fork this repository. Make sure that the "production" branch is the primary branch.
 2. Edit the files under ``manifests/`` to do what you want. The majority of configuration is triggered by
    ``manifests/site.pp``, which I use to pull in default bits of configuration, plus distro- and hardware-specific
-   bits.
+   bits. Most importantly, edit the "configuration" block in site.pp to have the correct username, etc.
 3. Add or remove modules in the ``Puppetfile`` as necessary, replacing ``jantman/privatepuppet`` with
    your own private puppet module, if needed.
 4. Use as per the Usage instructions below.

@@ -39,7 +39,6 @@ class workstation_bootstrap {
 
   # Generic stuff for all OSes
 
-
   #################################################
   # personal config - probably only useful to me, #
   #  or relatively custom                         #
