@@ -88,7 +88,7 @@ Usage
 -----
 
 1. Deploy your modules/manifests: ``r10k deploy environment -p``
-2. ``alias puppetize='puppet apply /etc/puppet/environments/production/manifests/site.pp'``
+2. ``alias puppetize='puppet apply -e "require workstation_bootstrap"'``
 3. ``puppetize``
 4. Iterate as needed. Re-run occasionally.
 5. If you don't make any root (or outside your homedir) changes outside of puppet, ever,
