@@ -87,11 +87,10 @@ This mainly follows the r10k documentation and [jtopjian's post](http://terrarum
 Usage
 -----
 
-1. Deploy your modules/manifests: ``r10k deploy environment -p``
-2. ``alias puppetize='puppet apply -e "require workstation_bootstrap"'``
-3. ``puppetize``
-4. Iterate as needed. Re-run occasionally.
-5. If you don't make any root (or outside your homedir) changes outside of puppet, ever,
+1. ``alias puppetize='r10k deploy environment -p; puppet apply -e "require workstation_bootstrap"'``
+2. ``puppetize``
+3. Iterate as needed. Re-run occasionally.
+4. If you don't make any root (or outside your homedir) changes outside of puppet, ever,
    you'll always be able to rebuild your machine after failure or when you get a new one.
    Now you can finally stop backing up everything but your homedir (and your github, of course...).
 
