@@ -9,43 +9,45 @@
 #
 class workstation_bootstrap {
 
-#################
-# configuration #
-#################
+  #################
+  # configuration #
+  #################
 
-$username = 'jantman'
+  $username = 'jantman'
 
-###########################################
-# stuff that should be useful to everyone #
-###########################################
+  ###########################################
+  # stuff that should be useful to everyone #
+  ###########################################
 
-# Arch-specific stuff
-if $::osfamily == 'Archlinux' {
+  # Arch-specific stuff
+  if $::osfamily == 'Archlinux' {
 
-  class {'archlinux_workstation':
-    username  => $username,
+    class {'archlinux_workstation':
+      username  => $username,
+    }
+
+    # Arch laptop specific
+    if $::type == 'Notebook' or $::type == 'Portable' or $::type == 'LapTop' or $::type == 'Sub Notebook' {
+      # nothing yet...
+    }
+  } # end Arch-specific
+
+  # MacBookPro Retina 10,1-specific
+  if $::bios_version =~ /^MBP101.+/ or $::productname == 'MacBookPro10,1' {
+    # TODO: https://github.com/jantman/puppet-archlinux-macbookretina
   }
 
-  # Arch laptop specific
-  if $::type == 'Notebook' or $::type == 'Portable' or $::type == 'LapTop' or $::type == 'Sub Notebook' {
-    # nothing yet...
-  }
+  # Generic stuff for all OSes
+
+
+  #################################################
+  # personal config - probably only useful to me, #
+  #  or relatively custom                         #
+  #################################################
+
+  # my private stuff
+  class {'privatepuppet': }
 }
 
-# MacBookPro Retina 10,1-specific
-if $::bios_version =~ /^MBP101.+/ or $::productname == 'MacBookPro10,1' {
-  # TODO: https://github.com/jantman/puppet-archlinux-macbookretina
-}
-
-# Generic stuff for all OSes
-
-
-#################################################
-# personal config - probably only useful to me, #
-#  or relatively custom                         #
-#################################################
-
-# my private stuff
-class {'privatepuppet': }
-
-}
+# define the class, to be applied when this manifest runs
+class {'workstation_bootstrap': }
