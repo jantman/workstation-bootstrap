@@ -5,6 +5,18 @@ describe 'workstation_bootstrap' do
   let(:pre_condition) { 'class archlinux_workstation ($username, ) {}' }
   let(:pre_condition) { 'class privatepuppet {}' }
 
+  context 'on all osfamilies' do
+
+    describe 'should compile with all deps' do
+      it { should compile.with_all_deps }
+    end
+
+    it { should contain_class('privatepuppet') }
+
+    it { should contain_class('workstation_bootstrap') }
+
+  end # context 'on all osfamilies'
+
   context 'on osfamily Archlinux' do
     let(:params) {{ }}
     let(:facts) {{
