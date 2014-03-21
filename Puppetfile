@@ -17,6 +17,7 @@ mod 'saz/sudo', '3.0.3' # dependency of archlinux_workstation
 mod 'ssh', # my fork of saz/ssh
   :git => 'https://github.com/jantman/puppet-ssh.git',
   :ref => 'archlinux'
+mod 'puppetlabs/firewall', '1.0.2'
 
 ##################
 # github modules #
