@@ -48,5 +48,45 @@ class workstation_bootstrap {
   class {'privatepuppet': }
 }
 
+# puppetlabs/firewall - this stuff needs to be
+#  done in global/top scope.
+resources { "firewall":
+  purge => true
+}
+
+Firewall {
+  before  => Class['workstation_bootstrap::firewall_post'],
+  require => Class['workstation_bootstrap::firewall_pre'],
+}
+
+class workstation_bootstrap::firewall_pre {
+  # Default firewall rules
+  firewall { '000 accept all icmp':
+    proto   => 'icmp',
+    action  => 'accept',
+  }->
+  firewall { '001 accept all to lo interface':
+    proto   => 'all',
+    iniface => 'lo',
+    action  => 'accept',
+  }->
+  firewall { '002 accept related established rules':
+    proto   => 'all',
+    ctstate => ['RELATED', 'ESTABLISHED'],
+    action  => 'accept',
+  }
+}
+
+class workstation_bootstrap::firewall_post {
+  firewall { '999 drop all':
+    proto   => 'all',
+    action  => 'drop',
+    before  => undef,
+  }
+}
+
+class { ['workstation_bootstrap::firewall_pre', 'workstation_bootstrap::firewall_post']: }
+# END puppetlabs/firewall
+
 # define the class, to be applied when this manifest runs
 class {'workstation_bootstrap': }
