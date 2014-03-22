@@ -18,6 +18,7 @@ mod 'ssh', # my fork of saz/ssh
   :git => 'https://github.com/jantman/puppet-ssh.git',
   :ref => 'archlinux'
 mod 'puppetlabs/firewall', '1.0.2'
+mod 'puppetlabs/inifile', '1.0.3'
 
 ##################
 # github modules #
