@@ -20,6 +20,7 @@ mod 'ssh', # my fork of saz/ssh
 mod 'puppetlabs/firewall', '1.0.2'
 mod 'puppetlabs/inifile', '1.0.3'
 mod 'puppetlabs/vcsrepo', '0.2.0'
+mod 'nanliu/staging', '0.4.0'
 
 ##################
 # github modules #
