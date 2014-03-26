@@ -39,10 +39,6 @@ class workstation_bootstrap {
 
   # Generic stuff for all OSes
 
-  # install RVM and some rubies via eirc/single_user_rvm
-  single_user_rvm::install { $username: }
-  single_user_rvm::install_ruby { ['ruby-1.8.7', 'ruby-1.9.3', 'ruby-2.0.0']: user => $username, }
-
   #################################################
   # personal config - probably only useful to me, #
   #  or relatively custom                         #
