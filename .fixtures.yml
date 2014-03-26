@@ -2,5 +2,6 @@ fixtures:
   repositories:
     stdlib: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
     firewall: "git://github.com/puppetlabs/puppetlabs-firewall.git"
+    single_user_rvm: "https://github.com/eirc/puppet-single_user_rvm.git"
   symlinks:
     workstation_bootstrap: "#{source_dir}"

@@ -18,6 +18,10 @@ describe 'workstation_bootstrap' do
 
     it { should contain_class('workstation_bootstrap') }
 
+    it { should contain_single_user_rvm__install() }
+
+    it { should contain_single_user_rvm__install_ruby(['ruby-1.8.7', 'ruby-1.9.3', 'ruby-2.0.0']) }
+
   end # context 'on all osfamilies'
 
   context 'on osfamily Archlinux' do
