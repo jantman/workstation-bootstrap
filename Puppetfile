@@ -13,10 +13,7 @@ forge 'forge.puppetlabs.com'
 
 mod 'puppetlabs/stdlib', '4.1.0'
 mod 'saz/sudo', '3.0.3' # dependency of archlinux_workstation
-#mod 'saz/ssh', '2.3.3' # dependency of archlinux_workstation
-mod 'ssh', # my fork of saz/ssh
-  :git => 'https://github.com/jantman/puppet-ssh.git',
-  :ref => 'archlinux'
+mod 'saz/ssh', '2.3.6' # dependency of archlinux_workstation
 mod 'puppetlabs/firewall', '1.0.2'
 mod 'puppetlabs/inifile', '1.0.3'
 mod 'puppetlabs/vcsrepo', '0.2.0'
