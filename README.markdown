@@ -1,3 +1,7 @@
+# workstation-bootstrap
+
+__Repository Status: Active__ (under active development; usable) as of 2014-12-07
+
 ####Table of Contents
 
 1. [Overview](#overview)
