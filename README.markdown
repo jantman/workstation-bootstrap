@@ -1,6 +1,6 @@
 # workstation-bootstrap
 
-__Repository Status: Active__ (under active development; usable) as of 2014-12-07
+[![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/0.1.0/active.svg)](http://www.repostatus.org/#active)
 
 ####Table of Contents
 
