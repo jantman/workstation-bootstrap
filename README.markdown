@@ -56,6 +56,7 @@ Distro-specific instructions follow.
 7. Install r10k via yaourt: ``yaourt -S ruby-r10k``. If yaourt installed ``ruby-cri``, and r10k still
    requires 2.4.0, you'll need to install it: ``gem install cri -v 2.4.0``.
 8. Install a text editor of your choice (i.e. ``vim``, ``emacs``, etc.)
+9. If you're going to be using a private puppet module, setup SSH keys for the root user and add them to your GitHub account.
 
 ##Reference
 
@@ -78,6 +79,11 @@ instructions below.
 4. Use as per the Usage instructions below.
 
 ##Setup
+
+1. ``cd /etc/puppetlabs/puppet``
+2. ``git clone https://github.com/jantman/workstation-bootstrap.git workstation-bootstrap`` (or your fork, if you made one)
+3. ``cd workstation-bootstrap``
+4. ``./setup.sh``
 
 This mainly follows the r10k documentation and [jtopjian's post](http://terrarum.net/administration/puppet-infrastructure-with-r10k.html).
 
