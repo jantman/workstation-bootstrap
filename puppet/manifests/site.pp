@@ -7,6 +7,25 @@
 # The canonical source of the latest unmodified version of this file is:
 # https://github.com/jantman/workstation-bootstrap/blob/production/manifests/site.pp
 #
+
+# puppetlabs/firewall - this stuff needs to be
+#  done in global/top scope.
+resources { 'firewall':
+  purge => true
+}
+
+# TODO - these next 2 lines should be able to come from Hiera
+class { ['workstation_bootstrap::firewall_pre', 'workstation_bootstrap::firewall_post']: }
+class { 'firewall': }
+
+Firewall {
+  before  => Class['workstation_bootstrap::firewall_post'],
+  require => Class['workstation_bootstrap::firewall_pre'],
+}
+# END puppetlabs/firewall
+
+# TODO - everything below here can go somewhere else - hopefully Hiera
+
 class workstation_bootstrap {
 
   #################
@@ -48,12 +67,6 @@ class workstation_bootstrap {
   class {'privatepuppet': }
 }
 
-# puppetlabs/firewall - this stuff needs to be
-#  done in global/top scope.
-resources { 'firewall':
-  purge => true
-}
-
 class workstation_bootstrap::firewall_pre {
   Firewall {
     require => undef,
@@ -68,7 +81,13 @@ class workstation_bootstrap::firewall_pre {
     iniface => 'lo',
     action  => 'accept',
   }->
-  firewall { '002 accept related established rules':
+  firewall { '002 reject local traffic not on loopback interface':
+    iniface     => '! lo',
+    proto       => 'all',
+    destination => '127.0.0.1/8',
+    action      => 'reject',
+  }->
+  firewall { '003 accept related established rules':
     proto   => 'all',
     ctstate => ['RELATED', 'ESTABLISHED'],
     action  => 'accept',
@@ -83,14 +102,5 @@ class workstation_bootstrap::firewall_post {
   }
 }
 
-class { ['workstation_bootstrap::firewall_pre', 'workstation_bootstrap::firewall_post']: }
-class { 'firewall': }
-
-Firewall {
-  before  => Class['workstation_bootstrap::firewall_post'],
-  require => Class['workstation_bootstrap::firewall_pre'],
-}
-# END puppetlabs/firewall
-
 # define the class, to be applied when this manifest runs
-class {'workstation_bootstrap': }
+#class {'workstation_bootstrap': }
