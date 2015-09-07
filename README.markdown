@@ -10,10 +10,15 @@ __Note__ - This project is currently undergoing a major overhaul. Stay tuned.
 2. [Prerequisites](#prerequisites)
     * [General](#general)
 	* [Arch Linux](#arch-linux)
-4. [Customization](#customization)
-5. [Setup](#setup)
-6. [Usage](#usage)
-3. [Reference](#reference)
+3. [Customization](#customization)
+    * Hiera Data
+4. [Setup](#setup)
+5. [Usage](#usage)
+6. [Reference](#reference)
+    * workstation-bootstrap module
+    * Puppetfile
+    * Hiera
+7. [Testing](#testing)
 
 ##Overview
 
@@ -68,6 +73,8 @@ Here's how to make this project do what you want:
 
 See the [Reference](#reference) section below for what this module currently does.
 
+###Hiera Data
+
 ##Setup
 
 To set up the project on one of your own machines:
@@ -81,17 +88,20 @@ To set up the project on one of your own machines:
 
 ##Reference
 
-This details the actions that this module takes, by default. To use it, follow the [Customization](#customization)
-instructions below.
+###workstation-bootstrap module
 
-* Define an instance of my [archlinux_workstation](https://github.com/jantman/puppet-archlinux-workstation) module on
-  any node where ::osfamily is 'Archlinux'
-* Define an instance of my "privatepuppet" module on every node (which you should either remove, or replace with your
-  own private module for sensitive stuff).
+The entirety of the puppet code for the ``workstation-bootstrap`` module lives in ``puppet/manifests/site.pp`` in this repository.
+
+Currently what it does is:
+
+* Setup for the [puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall) module as documented in its readme.
+
+###Puppetfile
+
+###Hiera
 
 TODO - document what the defaults for the module do. Also mention the included modules like [puppet-archlinux-macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina) and [puppet-archlinux-workstation](https://github.com/jantman/puppet-archlinux-workstation).
 
-Testing
---------
+##Testing
 
-A ``Vagrantfile`` is provided that spins up an Arch Linux VM with puppet installed, suitable for testing.
+A ``Vagrantfile`` is provided that spins up an Arch Linux VM with puppet installed, suitable for testing your configuration.
