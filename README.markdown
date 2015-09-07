@@ -11,13 +11,13 @@ __Note__ - This project is currently undergoing a major overhaul. Stay tuned.
     * [General](#general)
 	* [Arch Linux](#arch-linux)
 3. [Customization](#customization)
-    * Hiera Data
+    * [Hiera Data](#hiera-data)
 4. [Setup](#setup)
 5. [Usage](#usage)
 6. [Reference](#reference)
-    * workstation-bootstrap module
-    * Puppetfile
-    * Hiera
+    * [workstation-bootstrap module](#workstation-bootstrap-module)
+    * [Puppetfile](#puppetfile)
+    * [Hiera](#hiera)
 7. [Testing](#testing)
 
 ##Overview
@@ -85,6 +85,10 @@ To set up the project on one of your own machines:
 4. ``./setup.sh``
 5. Deploy the modules with r10k: ``./deploy.sh``
 6. Run puppet: ``./run_puppet.sh``
+
+## Usage
+
+Run ``./deploy.sh`` to run r10k and ``./run_puppet.sh`` to run Puppet for the site.pp manifest. ``./deploy_and_run.sh`` will combine both of these.
 
 ##Reference
 
