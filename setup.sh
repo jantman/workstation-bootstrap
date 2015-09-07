@@ -4,7 +4,7 @@ MYSOURCE=$(realpath -s $0)
 PUPPETDIR=/etc/puppetlabs/code
 SETUP_LOC=$PUPPETDIR/workstation-bootstrap/setup.sh
 if [[ "$MYSOURCE" != "$SETUP_LOC" ]]; then
-    >&2 echo "ERROR: setup script must be located at: $SETUP_LOC"
+    >&2 echo "ERROR: setup script must be located at: $SETUP_LOC (not $MYSOURCE)"
     exit 1
 fi
 
@@ -13,10 +13,7 @@ fi
 echo "Symlinking $PUPPETDIR/hiera.yaml to $PUPPETDIR/workstation-bootstrap/puppet/config/hiera.yaml"
 ln -s $PUPPETDIR/workstation-bootstrap/puppet/config/hiera.yaml $PUPPETDIR/hiera.yaml
 
-mkdir -p $PUPPETDIR/environments/production
+mkdir -p $PUPPETDIR/environments
 
-echo "Symlinking $PUPPETDIR/environments/production/manifests to $PUPPETDIR/workstation-bootstrap/puppet/manifests"
-ln -s $PUPPETDIR/workstation-bootstrap/puppet/manifests $PUPPETDIR/environments/production/manifests
-
-echo "Symlinking $PUPPETDIR/environments/production/modules to $PUPPETDIR/workstation-bootstrap/puppet/modules"
-ln -s $PUPPETDIR/workstation-bootstrap/puppet/modules $PUPPETDIR/environments/production/modules
+echo "Symlinking $PUPPETDIR/environments/production to $PUPPETDIR/workstation-bootstrap/puppet"
+ln -s $PUPPETDIR/workstation-bootstrap/puppet $PUPPETDIR/environments/production
