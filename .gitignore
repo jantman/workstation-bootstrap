@@ -7,3 +7,4 @@ spec/fixtures
 vendor
 Gemfile.lock
 /metadata.json
+puppet/modules/
