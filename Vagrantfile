@@ -1,6 +1,14 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+$script = <<SCRIPT
+/bin/bash -x
+if [[ ! -e /etc/puppetlabs/code/workstation-bootstrap ]]; then
+    echo "symlinking /etc/puppetlabs/code/workstation-bootstrap to /vagrant"
+    ln -s /vagrant /etc/puppetlabs/code/workstation-bootstrap
+fi
+SCRIPT
+
 Vagrant.configure(2) do |config|
   # use box from Atlas
   config.vm.box = "jantman/packer-arch-workstation"
@@ -24,4 +32,5 @@ Vagrant.configure(2) do |config|
     vb.gui = true
   end
 
+  config.vm.provision "shell", inline: $script
 end

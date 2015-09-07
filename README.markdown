@@ -109,7 +109,7 @@ This mainly follows the r10k documentation and [jtopjian's post](http://terrarum
 Usage
 -----
 
-1. ``alias puppetize='r10k deploy environment -p; puppet apply --verbose /etc/puppet/environments/production/manifests/site.pp'``
+1. ``alias puppetize='r10k deploy environment -p; puppet apply --verbose /etc/puppetlabs/code/environments/production/manifests/site.pp'``
 2. ``puppetize``
 3. Iterate as needed. Re-run occasionally.
 4. If you don't make any root (or outside your homedir) changes outside of puppet, ever,
