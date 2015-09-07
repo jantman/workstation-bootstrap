@@ -1,24 +1,23 @@
 # workstation-bootstrap
 
-__Note__ - This project is currently undergoing a major overhaul. Stay tuned.
-
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/0.1.0/active.svg)](http://www.repostatus.org/#active)
 
 ####Table of Contents
 
 1. [Overview](#overview)
-2. [Prerequisites](#prerequisites)
+2. [Status](#status)
+3. [Prerequisites](#prerequisites)
     * [General](#general)
 	* [Arch Linux](#arch-linux)
-3. [Customization](#customization)
+4. [Customization](#customization)
     * [Hiera Data](#hiera-data)
-4. [Setup](#setup)
-5. [Usage](#usage)
-6. [Reference](#reference)
+5. [Setup](#setup)
+6. [Usage](#usage)
+7. [Reference](#reference)
     * [workstation-bootstrap module](#workstation-bootstrap-module)
     * [Puppetfile](#puppetfile)
     * [Hiera](#hiera)
-7. [Testing](#testing)
+8. [Testing](#testing)
 
 ##Overview
 
@@ -34,6 +33,37 @@ The general concept is that this repository holds a [Puppetfile](https://github.
 use with r10k, a ``site.pp`` main manifest (currently just used to setup the top-scope things needed for
 [puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall)), your [Hiera](http://docs.puppetlabs.com/hiera/latest/) data,
 and some support scripts to keep things running smoothly.
+
+##Status
+
+This project is currently undergoing a relatively major overhaul. At the moment, I'm at a bit of an impasse in terms of how to proceed.
+
+This is intended to be a generic skeleton for helping people manage their personal machines with Puppet. I'd like to include a reasonable
+set of default modules and configuration, such as my [puppet-archlinux-macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina)
+and [puppet-archlinux-workstation](https://github.com/jantman/puppet-archlinux-workstation) modules.
+
+The problem that I'm having is that Hiera and Puppetfiles don't really deal well with overriding configuration. Specifically:
+
+- Puppetfiles don't have any hierarchical support, it's just one file. So there's no sane way to layer them, i.e. add modules
+from another file, or remove modules added in a previous file.
+- Hiera handles a lot of this nicely, and the [data in modules](https://github.com/puppetlabs/puppet/pull/3341) support added in
+Puppet 4.x (see these [blog](http://puppet-on-the-edge.blogspot.be/2015/01/puppet-40-data-in-modules-and.html)
+[posts](http://puppet-on-the-edge.blogspot.be/2015/02/puppet-40-data-in-modules-part-ii.html)) provides a way to set defaults
+for parameters in a module and override them locally. But it still doesn't provide any way to manipulate the ``classes`` array,
+i.e. having a later data source _remove_ a class that was added in a previous one.
+
+I'd also like to maintain the ability for forks of this repository to pull in upstream changes easily, which also means that
+my own personal configuration (Hiera and Puppetfile) shouldn't be explicitly used in the actual repository.
+
+Lastly, if the solution was "put your Hiera data and Puppetfile in a separate repository," the value of this would decrease
+significantly, and it would add to the complexity of getting started.
+
+I'm trying to come up with a better solution, but the best that I can come up with right now is the following hack:
+
+Write a Ruby script with some upstream defaults baked-in. These can be overridden by another ruby file (or YAML?) that's
+written by the user, and either lives in this repository (committed to their fork) or is pulled in from another URL
+(separate git repo? Gist?) or from a filesystem path. This ruby script will dynamically generate the Hiera files and
+Puppetfile according to the user's configuration, and will allow them to override the project's defaults.
 
 ##Prerequisites
 
@@ -105,6 +135,8 @@ Currently what it does is:
 * Setup for the [puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall) module as documented in its readme.
 
 ###Puppetfile
+
+TODO.
 
 ###Hiera
 
