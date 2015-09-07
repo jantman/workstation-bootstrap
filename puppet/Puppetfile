@@ -14,7 +14,7 @@ forge 'forge.puppetlabs.com'
 mod 'puppetlabs/stdlib', '4.1.0'
 mod 'saz/sudo', '3.0.3' # dependency of archlinux_workstation
 mod 'saz/ssh', '2.3.6' # dependency of archlinux_workstation
-mod 'puppetlabs/firewall', '1.0.2'
+mod 'puppetlabs/firewall', '1.7.1'
 mod 'puppetlabs/inifile', '1.0.3'
 mod 'puppetlabs/vcsrepo', '0.2.0'
 mod 'eirc/single_user_rvm', '0.3.0'
