@@ -58,3 +58,6 @@ class workstation_bootstrap::firewall_post {
     before  => undef,
   }
 }
+
+# include classes from Hiera
+hiera_include('classes')

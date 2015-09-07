@@ -1,10 +1,9 @@
 ---
-backends:
+:backends:
   - yaml
-hierarchy:
+:hierarchy:
   - defaults
   - "%{clientcert}"
-  - "%{environment}"
   - global
-yaml:
-  datadir: /etc/puppetlabs/puppet/workstation-bootstrap/puppet/hiera
+:yaml:
+  :datadir: /etc/puppetlabs/code/workstation-bootstrap/puppet/hiera

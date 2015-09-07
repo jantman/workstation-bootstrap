@@ -88,7 +88,11 @@ To set up the project on one of your own machines:
 
 ## Usage
 
-Run ``./run_r10k.sh`` to run r10k and ``./run_puppet.sh`` to run Puppet for the site.pp manifest. ``./run_r10k_puppet.sh`` will combine both of these.
+* To run the r10k deploy, ``./run_r10k.sh``
+* To run puppet on ``site.pp``, ``./run_puppet.sh``
+* To run r10k and then puppet, ``./run_r10k_puppet.sh``
+
+``./run_puppet.sh`` and ``./run_r10k_puppet.sh`` will add any command-line arguments to the ``puppet`` command before the path to ``site.pp``.
 
 ##Reference
 
