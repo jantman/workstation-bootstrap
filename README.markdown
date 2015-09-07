@@ -83,12 +83,12 @@ To set up the project on one of your own machines:
 2. ``git clone https://github.com/jantman/workstation-bootstrap.git workstation-bootstrap`` (or your fork, if you made one)
 3. ``cd workstation-bootstrap``
 4. ``./setup.sh``
-5. Deploy the modules with r10k: ``./deploy.sh``
+5. Deploy the modules with r10k: ``./run_r10k.sh``
 6. Run puppet: ``./run_puppet.sh``
 
 ## Usage
 
-Run ``./deploy.sh`` to run r10k and ``./run_puppet.sh`` to run Puppet for the site.pp manifest. ``./deploy_and_run.sh`` will combine both of these.
+Run ``./run_r10k.sh`` to run r10k and ``./run_puppet.sh`` to run Puppet for the site.pp manifest. ``./run_r10k_puppet.sh`` will combine both of these.
 
 ##Reference
 
