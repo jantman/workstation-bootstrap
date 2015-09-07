@@ -2,14 +2,16 @@
 forge 'forge.puppetlabs.com'
 
 #
-# Until https://github.com/adrienthebo/r10k/issues/38 is fixed,
+# Until https://tickets.puppetlabs.com/browse/RK-3 is fixed,
 # r10k doesn't have dependency resolution so we need to specify
 # everything here explicitly.
 #
 
-#################
-# forge modules #
-#################
+#######################################
+# workstation-bootstrap upstream code #
+#######################################
+
+# forge modules
 
 mod 'puppetlabs/stdlib', '4.1.0'
 mod 'saz/sudo', '3.0.3' # dependency of archlinux_workstation
@@ -20,16 +22,16 @@ mod 'puppetlabs/vcsrepo', '0.2.0'
 mod 'eirc/single_user_rvm', '0.3.0'
 mod 'nanliu/staging', '0.4.0'
 
-##################
-# github modules #
-##################
+# github modules
 
-#mod 'archlinux_workstation',
-#  :git => 'https://github.com/jantman/puppet-archlinux-workstation.git'
+mod 'archlinux_workstation',
+  :git => 'https://github.com/jantman/puppet-archlinux-workstation.git'
 
-####################
-# personal modules #
-####################
+##########################################################
+# personal modules                                       #
+##########################################################
+# (either replace this with your own, or just remove it) #
+##########################################################
 
-#mod 'privatepuppet',
-#  :git => 'git@github.com:jantman/privatepuppet.git'
+mod 'privatepuppet',
+  :git => 'git@github.com:jantman/privatepuppet.git'
