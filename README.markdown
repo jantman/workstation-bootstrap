@@ -139,7 +139,17 @@ At this moment, what this code does is:
 
 ###Puppetfile
 
-TODO - document what's included in the Puppetfile
+* [archlinux_workstation](https://github.com/jantman/puppet-archlinux-workstation)
+* [puppetlabs/stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib)
+* [saz/sudo](https://forge.puppetlabs.com/saz/sudo) (dependency of archlinux_workstation)
+* [saz/ssh](https://forge.puppetlabs.com/saz/ssh) (dependency of archlinux_workstation)
+* [puppetlabs/firewall](https://forge.puppetlabs.com/puppetlabs/firewall)
+* [puppetlabs/inifile](https://forge.puppetlabs.com/puppetlabs/inifile)
+* [puppetlabs/vcsrepo](https://forge.puppetlabs.com/puppetlabs/vcsrepo)
+* [eirc/single_user_rvm](https://forge.puppetlabs.com/eirc/single_user_rvm)
+* [nanliu/staging](https://forge.puppetlabs.com/nanliu/staging)
+
+By default, the Puppetfile also includes my personal "privatepuppet" module. You should comment this out or replace it with your own personal module(s).
 
 ###Hiera
 

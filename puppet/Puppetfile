@@ -11,24 +11,25 @@ forge 'forge.puppetlabs.com'
 # workstation-bootstrap upstream code #
 #######################################
 
-# forge modules
-
-mod 'puppetlabs/stdlib', '4.1.0'
-mod 'saz/sudo', '3.0.3' # dependency of archlinux_workstation
-mod 'saz/ssh', '2.3.6' # dependency of archlinux_workstation
-mod 'puppetlabs/firewall', '1.7.1'
-mod 'puppetlabs/inifile', '1.0.3'
-mod 'puppetlabs/vcsrepo', '0.2.0'
-mod 'eirc/single_user_rvm', '0.3.0'
-mod 'nanliu/staging', '0.4.0'
-
-# github modules
+# modules
 
 mod 'archlinux_workstation',
   :git => 'https://github.com/jantman/puppet-archlinux-workstation.git'
 
+# module dependencies
+
+mod 'puppetlabs/stdlib', '4.9.0'
+mod 'saz/sudo', '3.1.0' # dependency of archlinux_workstation
+mod 'saz/ssh', '2.8.1' # dependency of archlinux_workstation
+mod 'puppetlabs/firewall', '1.7.1'
+mod 'puppetlabs/inifile', '1.4.2'
+mod 'puppetlabs/vcsrepo', '1.3.1'
+mod 'eirc/single_user_rvm', '0.3.0'
+mod 'nanliu/staging', '1.0.3'
+
+
 ##########################################################
-# personal modules                                       #
+# user-specific                                          #
 ##########################################################
 # (either replace this with your own, or just remove it) #
 ##########################################################
