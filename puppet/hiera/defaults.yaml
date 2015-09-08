@@ -1,0 +1,20 @@
+####################################################################
+# User Configuration                                               #
+#                                                                  #
+# These variables must be updated for your specific configuration. #
+####################################################################
+
+# the username for your login user
+username: jantman
+
+################################################################################
+# END OF User Configuration                                                    #
+#                                                                              #
+# Only update the variables below  if you wish to change the default behavior. #
+################################################################################
+
+# classes
+classes:
+  - workstation_bootstrap::firewall_pre
+  - workstation_bootstrap::firewall_post
+  - firewall

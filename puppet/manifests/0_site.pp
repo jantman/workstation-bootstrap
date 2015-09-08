@@ -1,12 +1,11 @@
-# == Class: workstation_bootstrap
+# workstation-bootstrap 0_site.pp
 #
-# Main site.pp entry point for workstation_bootstrap project, mainly to handle
-# puppetlabs-firewall and other things that need to be in top-scope context.
+# This manifest sets up the requirements for the puppetlabs-firewall module.
 #
 # See README.markdown for usage and further information.
 #
 # The canonical source of the latest unmodified version of this file is:
-# https://github.com/jantman/workstation-bootstrap/blob/production/manifests/site.pp
+# <https://github.com/jantman/workstation-bootstrap/blob/production/puppet/manifests/0_site.pp>
 #
 
 resources { 'firewall':
@@ -58,6 +57,3 @@ class workstation_bootstrap::firewall_post {
     before  => undef,
   }
 }
-
-# include classes from Hiera
-hiera_include('classes')

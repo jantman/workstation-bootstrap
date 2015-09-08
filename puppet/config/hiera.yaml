@@ -3,7 +3,8 @@
   - yaml
 :hierarchy:
   - defaults
+  - "os.family/%{::os.family}"
   - "%{clientcert}"
-  - global
+  - overrides
 :yaml:
   :datadir: /etc/puppetlabs/code/workstation-bootstrap/puppet/hiera

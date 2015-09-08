@@ -5,19 +5,25 @@
 ####Table of Contents
 
 1. [Overview](#overview)
-2. [Status](#status)
-3. [Prerequisites](#prerequisites)
+    * [Warning](#warning)
+2. [Prerequisites](#prerequisites)
     * [General](#general)
 	* [Arch Linux](#arch-linux)
-4. [Customization](#customization)
+3. [Customization](#customization)
     * [Hiera Data](#hiera-data)
-5. [Setup](#setup)
-6. [Usage](#usage)
-7. [Reference](#reference)
-    * [workstation-bootstrap module](#workstation-bootstrap-module)
+    * [User Manifest](#user-manifest)
+    * [Sensitive Information](#sensitive-information)
+4. [Setup](#setup)
+5. [Usage](#usage)
+6. [Reference](#reference)
+    * [manifests](#manifests)
+        * [0_site.pp](#0_site.pp)
+        * [1_user.pp](#1_user.pp)
+        * [2_hiera_classes.pp](#2_hiera_classes.pp)
     * [Puppetfile](#puppetfile)
     * [Hiera](#hiera)
-8. [Testing](#testing)
+    * [Hiera Ordering](#hiera-ordering)
+7. [Testing](#testing)
 
 ##Overview
 
@@ -26,44 +32,21 @@ It aims to let me configure my personal boxes with Puppet, and maintain more or 
 configuration) on both/all of them.
 
 This is intended to be a generic framework for anyone who wants to use Puppet to manage their workstation's configuration. The project
-provides some sane (though opinionated) defaults, and instructions for how to override them. The defaults are  geared towards Arch
+provides some sane (though opinionated) defaults, and instructions for how to change them. The defaults are geared towards Arch
 Linux, but the core in this repository can be used for any distribution, or just as an example/starting point.
 
 The general concept is that this repository holds a [Puppetfile](https://github.com/puppetlabs/r10k/blob/master/doc/puppetfile.mkd) for
 use with r10k, a ``site.pp`` main manifest (currently just used to setup the top-scope things needed for
-[puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall)), your [Hiera](http://docs.puppetlabs.com/hiera/latest/) data,
-and some support scripts to keep things running smoothly.
+[puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall) and to pull in OS-specific classes),
+your [Hiera](http://docs.puppetlabs.com/hiera/latest/) data, and some support scripts to keep things running
+smoothly and set it up. You simply need to modify the Puppetfile, Hiera data, and ``user.pp`` and start using it!
 
-##Status
+###Warning
 
-This project is currently undergoing a relatively major overhaul. At the moment, I'm at a bit of an impasse in terms of how to proceed.
+__WARNING__: If you run this project unmodified on an existing machine, it WILL do very bad things. It's recommended that you:
 
-This is intended to be a generic skeleton for helping people manage their personal machines with Puppet. I'd like to include a reasonable
-set of default modules and configuration, such as my [puppet-archlinux-macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina)
-and [puppet-archlinux-workstation](https://github.com/jantman/puppet-archlinux-workstation) modules.
-
-The problem that I'm having is that Hiera and Puppetfiles don't really deal well with overriding configuration. Specifically:
-
-- Puppetfiles don't have any hierarchical support, it's just one file. So there's no sane way to layer them, i.e. add modules
-from another file, or remove modules added in a previous file.
-- Hiera handles a lot of this nicely, and the [data in modules](https://github.com/puppetlabs/puppet/pull/3341) support added in
-Puppet 4.x (see these [blog](http://puppet-on-the-edge.blogspot.be/2015/01/puppet-40-data-in-modules-and.html)
-[posts](http://puppet-on-the-edge.blogspot.be/2015/02/puppet-40-data-in-modules-part-ii.html)) provides a way to set defaults
-for parameters in a module and override them locally. But it still doesn't provide any way to manipulate the ``classes`` array,
-i.e. having a later data source _remove_ a class that was added in a previous one.
-
-I'd also like to maintain the ability for forks of this repository to pull in upstream changes easily, which also means that
-my own personal configuration (Hiera and Puppetfile) shouldn't be explicitly used in the actual repository.
-
-Lastly, if the solution was "put your Hiera data and Puppetfile in a separate repository," the value of this would decrease
-significantly, and it would add to the complexity of getting started.
-
-I'm trying to come up with a better solution, but the best that I can come up with right now is the following hack:
-
-Write a Ruby script with some upstream defaults baked-in. These can be overridden by another ruby file (or YAML?) that's
-written by the user, and either lives in this repository (committed to their fork) or is pulled in from another URL
-(separate git repo? Gist?) or from a filesystem path. This ruby script will dynamically generate the Hiera files and
-Puppetfile according to the user's configuration, and will allow them to override the project's defaults.
+1. Run this on a brand new machine, and review all upstream changes before running again.
+2. Carefully review the defaults to determine if they're acceptable to you.
 
 ##Prerequisites
 
@@ -72,7 +55,7 @@ Puppetfile according to the user's configuration, and will allow them to overrid
 To use this, you'll need:
 
 * A working OS install
-* ``puppet``, [r10k](https://github.com/adrienthebo/r10k) and ``git`` installed
+* ``puppet`` (4x; the current version in the Arch repo), [r10k](https://github.com/adrienthebo/r10k) (see below) and ``git`` installed
 * A text editor of your choice (usable without a GUI / X environment)
 
 Distro-specific instructions follow.
@@ -99,11 +82,38 @@ Here's how to make this project do what you want:
 1. Fork this repository. Make sure that the "production" branch is the primary branch.
 2. Edit ``puppet/Puppetfile`` to contain all of the modules that you need.
 3. Edit the files under ``puppet/hiera/`` to do what you need. See below for more information.
+4. Edit ``puppet/manifests/user.pp``
 4. Commit and push your changes.
 
-See the [Reference](#reference) section below for what this module currently does.
+The [Reference](#reference) section below describes what this project provides by default, what you _have_ to change,
+and some of the common things you may want to change.
 
 ###Hiera Data
+
+Aside from the modules you require in your Puppetfile and some items in ``user.pp``, the rest of the configuration resides in Hiera data, including the list of
+classes to apply to each node. This makes it easier to separate the upstream code for this repository from your own configuration,
+though doing so is still a bit of a [kluge](http://www.catb.org/jargon/html/K/kluge.html). See [future](#future) below.
+
+If you're OK with my [puppet-archlinux-macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina) and
+[puppet-archlinux-workstation](https://github.com/jantman/puppet-archlinux-workstation) modules, you should only need
+to touch ``defaults.yaml``, which provides the top-level configuration.
+
+###User Manifest
+
+This file includes some classes conditionally based on OS and hardware. See [manifests](#manifests) below for more information.
+
+###Sensitive Information
+
+Most users will have some sensitive information that they want on their machine (SSH keys, API credentials,
+personal information) and don't want in a public GitHub repository. There are three simple methods of handling
+this:
+
+1. Create a puppet module in a private GitHub repository that contains your sensitive configuration, dotfiles,
+etc. This is how I manage my personal configuration (hence the references to my 'privatepuppet' module).
+2. Manage your user-specific information in a puppet module that's stored locally (and deployed however you
+want), using r10k's [local module](https://github.com/puppetlabs/r10k/blob/master/doc/puppetfile.mkd#local) support.
+3. Duplicate your fork of the upstream repository and make it private. This is the last option, as it makes it
+   more difficult to pull in upstream changes or see what's changed upstream since you created the fork.
 
 ##Setup
 
@@ -113,34 +123,63 @@ To set up the project on one of your own machines:
 2. ``git clone https://github.com/jantman/workstation-bootstrap.git workstation-bootstrap`` (or your fork, if you made one)
 3. ``cd workstation-bootstrap``
 4. ``./setup.sh``
-5. Deploy the modules with r10k: ``./run_r10k.sh``
-6. Run puppet: ``./run_puppet.sh``
+5. Deploy the modules with r10k and then run Puppet: ``./run_r10k_puppet.sh``
 
 ## Usage
 
 * To run the r10k deploy, ``./run_r10k.sh``
 * To run puppet on ``site.pp``, ``./run_puppet.sh``
 * To run r10k and then puppet, ``./run_r10k_puppet.sh``
+* To find the value of a given key in the current Hiera data, ``./hiera_show_value.sh KEY_NAME``
 
-``./run_puppet.sh`` and ``./run_r10k_puppet.sh`` will add any command-line arguments to the ``puppet`` command before the path to ``site.pp``.
+``./run_puppet.sh`` and ``./run_r10k_puppet.sh`` will add any command-line arguments that you specify to the ``puppet`` command before the path to ``site.pp``.
 
 ##Reference
 
-###workstation-bootstrap module
+###manifests
 
-The entirety of the puppet code for the ``workstation-bootstrap`` module lives in ``puppet/manifests/site.pp`` in this repository.
+With the deprecation of Puppet's ``import`` keyword, top-level configuration is defined in a directory of manifests;
+running ``puppet apply`` pointing to the directory containing the manifests will [parse all files in the directory](http://docs.puppetlabs.com/puppet/latest/reference/dirs_manifest.html#directory-behavior-vs-single-file)
+in alphabetical order - analagous to having a ``site.pp`` and ``include``ing the other files in it.
 
-Currently what it does is:
+This project uses a small collection of modules to contain things which must be evaluated in top-scope (like puppetlabs-firewall setup),
+include classes via hiera, and wrap conditionals for things that can't be handed in Hiera (like OS- or hardware-specific class includes).
+
+####0_site.pp
+
+``0_site.pp`` contains the top-scope code for the ``workstation-bootstrap`` module.
+The entirety of the puppet code for the ``workstation-bootstrap`` module lives in ``puppet/manifests/0_site.pp`` in this repository.
+
+At this moment, what this code does is:
 
 * Setup for the [puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall) module as documented in its readme.
+* Declare the ``firewall`, ``workstation-bootstrap::firewall_pre`` and ``workstation-bootstrap::firewall_post`` classes for
+default firewall rules.
+
+####1_user.pp
+
+This manifest includes classes based on OS, hardware, and other facts. This mainly exists because of what I consider to be an
+oversight in the design of Hiera (see [HI-467](https://tickets.puppetlabs.com/browse/HI-467)); it doesn't handle the ``classes`` key differently, so it's not possible to specify classes
+additatively in multiple data files. There's also no way to remove a previously-added class. As a result, while we specify
+most of the classes to be applied in ``puppet/hiera/defaults.yaml``, there's no way in Hiera to specify classes to be added
+to a node based on OS Family, hardware, or other facts.
+
+This manifest exists to:
+
+1. Add classes to nodes based on specific facts
+2. Provide another extension point for user-specific information that must be defined in a top-level manifest.
+
+####2_hiera_classes.pp
+
+This manifest simply contains ``hiera_include('classes')`` to include classes from the Hiera ``classes`` array.
 
 ###Puppetfile
 
-TODO.
+TODO - document what's included in the Puppetfile
 
 ###Hiera
 
-TODO - document what the defaults for the module do. Also mention the included modules like [puppet-archlinux-macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina) and [puppet-archlinux-workstation](https://github.com/jantman/puppet-archlinux-workstation).
+TODO - document what the default Hiera data does. Also mention the included modules like [puppet-archlinux-macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina) and [puppet-archlinux-workstation](https://github.com/jantman/puppet-archlinux-workstation).
 
 ##Testing
 

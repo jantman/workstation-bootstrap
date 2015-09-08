@@ -1,8 +1,0 @@
-# top-scope variables used elsewhere in Hiera
-username: jantman
-
-# classes
-classes:
-  - workstation_bootstrap::firewall_pre
-  - workstation_bootstrap::firewall_post
-  - firewall
