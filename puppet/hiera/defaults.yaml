@@ -8,3 +8,6 @@ classes:
   - workstation_bootstrap::firewall_pre
   - workstation_bootstrap::firewall_post
   - firewall
+
+# This must exist, even if it's an empty array (like below)
+remove_classes: []

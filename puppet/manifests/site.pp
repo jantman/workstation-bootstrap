@@ -57,7 +57,13 @@ class workstation_bootstrap::firewall_post {
 
 # Include classes from Hiera, unless in ``exclude_classes``
 # see: <https://tickets.puppetlabs.com/browse/HI-467?focusedCommentId=213339&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-213339>
-function workstation-bootstrap::classes_from_hiera() {
-  lookup('classes', Array) - lookup('remove_classes', Array))
-}
-include workstation-bootstrap::classes_from_hiera()
+$hiera_classes = lookup('classes', Array, 'unique')
+notice("hiera 'classes': ${hiera_classes}")
+
+$hiera_remove_classes = lookup('remove_classes', Array, 'unique')
+notice("hiera 'remove_classes': ${hiera_remove_classes}")
+
+$final_classes = $hiera_classes - $hiera_remove_classes
+notice("final hiera 'classes': ${final_classes}")
+
+include($final_classes)
