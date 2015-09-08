@@ -1,6 +1,8 @@
-# workstation-bootstrap 0_site.pp
+# workstation-bootstrap site.pp
 #
-# This manifest sets up the requirements for the puppetlabs-firewall module.
+# This manifest sets up the requirements for the puppetlabs-firewall module,
+# includes classes defined in Hiera, and anything else that _must_ be done
+# in top-scope.
 #
 # See README.markdown for usage and further information.
 #
@@ -11,11 +13,6 @@
 resources { 'firewall':
   purge => true
 }
-
-# TODO - these next 2 lines should be able to come from Hiera
-class { ['workstation_bootstrap::firewall_pre', 'workstation_bootstrap::firewall_post']: }
-class { 'firewall': }
-# END TODO
 
 Firewall {
   before  => Class['workstation_bootstrap::firewall_post'],
@@ -57,3 +54,10 @@ class workstation_bootstrap::firewall_post {
     before  => undef,
   }
 }
+
+# Include classes from Hiera, unless in ``exclude_classes``
+# see: <https://tickets.puppetlabs.com/browse/HI-467?focusedCommentId=213339&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-213339>
+function workstation-bootstrap::classes_from_hiera() {
+  lookup('classes', Array) - lookup('remove_classes', Array))
+}
+include workstation-bootstrap::classes_from_hiera()

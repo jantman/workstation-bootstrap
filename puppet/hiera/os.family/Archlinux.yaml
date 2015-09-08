@@ -1,10 +1,8 @@
 ####################################################################
-# github.com/jantman/workstation-bootstrap  -  Global Defaults     #
+# github.com/jantman/workstation-bootstrap  -  Arch Linux OS       #
 #                                                                  #
 # If needed, these should be overridden in user_config.yaml        #
 ####################################################################
 
 classes:
-  - workstation_bootstrap::firewall_pre
-  - workstation_bootstrap::firewall_post
-  - firewall
+  - archlinux_workstation

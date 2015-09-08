@@ -4,7 +4,7 @@
 :hierarchy:
   - defaults
   - "os.family/%{::os.family}"
-  - "%{clientcert}"
-  - overrides
+  - "os.family_productname/%{::os.family}_%{::productname}"
+  - user_config
 :yaml:
   :datadir: /etc/puppetlabs/code/workstation-bootstrap/puppet/hiera

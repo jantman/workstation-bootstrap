@@ -1,0 +1,8 @@
+####################################################################
+# github.com/jantman/workstation-bootstrap  -  User Configuration  #
+#                                                                  #
+# These variables must be updated for your specific configuration. #
+####################################################################
+
+# the username for your login user
+username: jantman

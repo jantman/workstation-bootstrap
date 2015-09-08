@@ -17,4 +17,9 @@ fi
 # As a result, we need to munge Facter's YAML output to match what Hiera/Puppet
 # expect.
 facter --yaml | ruby -e 'require "yaml"; orig = YAML.load(STDIN.read); final = Hash[orig.map {|k, v| ["::#{k}", v] }]; puts YAML.dump(final)' > /tmp/facts.yaml
-hiera -d -y /tmp/facts.yaml $1
+if [[ "$1" == "classes" ]]; then
+    # -a -> array
+    hiera -d -y /tmp/facts.yaml -a $1
+else
+    hiera -d -y /tmp/facts.yaml $1
+fi
