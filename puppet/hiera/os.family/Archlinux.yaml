@@ -6,3 +6,5 @@
 
 classes:
   - archlinux_workstation
+
+archlinux_workstation::username: "%{alias('username')}"

@@ -67,7 +67,13 @@ Distro-specific instructions follow.
 4. Make sure everything is up to date: ``pacman -Syu``
 5. Install Puppet and some packages required to build ruby things: ``pacman -S base-devel puppet git lsb-release``
 6. Install r10k. It's currently not in the Arch packages repo or included in the Arch puppet package; for the time being,
-   you can find the PKGBUILDs that I use for r10k and its dependencies in my [arch-pkgbuilds](https://github.com/jantman/arch-pkgbuilds) repo.
+you can find the PKGBUILDs that I use for r10k and its dependencies in my [arch-pkgbuilds](https://github.com/jantman/arch-pkgbuilds) GitHub
+repo, or you can use my built packages via the following pacman repo configuration (append to the end of ``/etc/pacman.conf``):
+```
+[jantman]
+SigLevel = Never
+Server = http://archrepo.jasonantman.com/current
+```
 7. If you're going to be using a private puppet module, setup SSH keys for the root user and add them to your GitHub account (either as keys
    for your user, or deploy keys on the repository).
 

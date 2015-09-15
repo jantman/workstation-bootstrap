@@ -12,21 +12,25 @@ forge 'forge.puppetlabs.com'
 #######################################
 
 # modules
-
 mod 'archlinux_workstation',
-  :git => 'https://github.com/jantman/puppet-archlinux-workstation.git'
+  :git => 'https://github.com/jantman/puppet-archlinux-workstation.git',
+  :ref => 'puppet4'
 
 # module dependencies
-
 mod 'puppetlabs/stdlib', '4.9.0'
 mod 'saz/sudo', '3.1.0' # dependency of archlinux_workstation
-mod 'saz/ssh', '2.8.1' # dependency of archlinux_workstation
+mod 'puppetlabs/concat', '1.2.4' # dependency of saz/ssh
 mod 'puppetlabs/firewall', '1.7.1'
 mod 'puppetlabs/inifile', '1.4.2'
 mod 'puppetlabs/vcsrepo', '1.3.1'
 mod 'eirc/single_user_rvm', '0.3.0'
 mod 'nanliu/staging', '1.0.3'
 
+# dependency of archlinux_workstation, but not puppet4-compatible upstream
+# fork of saz/ssh
+mod 'ssh',
+  :git => 'https://github.com/jantman/puppet-ssh.git',
+  :ref => 'arch_puppet4'
 
 ##########################################################
 # user-specific                                          #
@@ -34,5 +38,5 @@ mod 'nanliu/staging', '1.0.3'
 # (either replace this with your own, or just remove it) #
 ##########################################################
 
-mod 'privatepuppet',
-  :git => 'git@github.com:jantman/privatepuppet.git'
+#mod 'privatepuppet',
+#  :git => 'git@github.com:jantman/privatepuppet.git'
