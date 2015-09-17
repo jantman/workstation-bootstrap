@@ -63,7 +63,7 @@ Distro-specific instructions follow.
    or the [Arch Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide), or
    [phoenix_install.md](phoenix_install.md) documenting my latest desktop machine build/install).
 2. If you're on a HiDPI display like a MacBook Retina, you may want to increase the console font size, i.e. ``setfont sun12x22``
-2. ``dhcpcd <interface name>`` to get minimally-working DHCP, or whatever you want to do to get connectivity to the outside world.
+2. Find your network interface name (``ip addr``) and get DHCP: ``systemctl start dhcpcd@<interface name>``, or get connectivity howerver else you want. You should now have an IP address, and networking should work (i.e. ``ping www.google.com``).
 3. if desired, ``pacman -S openssh && systemctl start sshd`` so you can work remotely
 4. Make sure everything is up to date: ``pacman -Syu``
 5. Install Puppet and some packages required to build ruby things: ``pacman -S base-devel puppet git lsb-release``
@@ -72,7 +72,7 @@ you can find the PKGBUILDs that I use for r10k and its dependencies in my [arch-
 repo, or you can use my built packages via the following pacman repo configuration (append to the end of ``/etc/pacman.conf``):
 ```
 [jantman]
-SigLevel = Never
+SigLevel = Optional TrustedOnly
 Server = http://archrepo.jasonantman.com/current
 ```
 7. If you're going to be using a private puppet module, setup SSH keys for the root user and add them to your GitHub account (either as keys for your user, or deploy keys on the repository).
@@ -116,11 +116,13 @@ Most users will have some sensitive information that they want on their machine 
 
 To set up the project on one of your own machines:
 
-1. ``cd /etc/puppetlabs/puppet``
+1. ``cd /etc/puppetlabs/code``
 2. ``git clone https://github.com/jantman/workstation-bootstrap.git workstation-bootstrap`` (or your fork, if you made one)
 3. ``cd workstation-bootstrap``
 4. ``./setup.sh``
 5. Deploy the modules with r10k and then run Puppet: ``./run_r10k_puppet.sh``
+6. After the initial run, set the password for your newly-created user.
+
 
 ## Usage
 
