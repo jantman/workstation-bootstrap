@@ -3,6 +3,16 @@
 
 $script = <<SCRIPT
 /bin/bash -x
+# setup my personal repo if it's not already
+if ! grep -q jantman /etc/pacman.conf; then
+    echo '[jantman]' >> /etc/pacman.conf
+    echo 'SigLevel = Optional TrustedOnly' >> /etc/pacman.conf
+    echo 'Server = http://archrepo.jasonantman.com/current' >> /etc/pacman.conf
+fi
+# do a full update
+pacman -Syu --noconfirm
+pacman -S --noconfirm git ruby-r10k
+# symlink our code directory
 if [[ ! -e /etc/puppetlabs/code/workstation-bootstrap ]]; then
     echo "symlinking /etc/puppetlabs/code/workstation-bootstrap to /vagrant"
     ln -s /vagrant /etc/puppetlabs/code/workstation-bootstrap
@@ -26,7 +36,7 @@ Vagrant.configure(2) do |config|
   # config.vm.synced_folder "../data", "/vagrant_data"
 
   config.vm.provider "virtualbox" do |vb|
-      # 1G memo
+    # 1G memo
     vb.customize ["modifyvm", :id, "--memory", "1024"]
     # workstation - assume we want a GUI
     vb.gui = true

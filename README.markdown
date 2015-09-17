@@ -75,8 +75,7 @@ repo, or you can use my built packages via the following pacman repo configurati
 SigLevel = Never
 Server = http://archrepo.jasonantman.com/current
 ```
-7. If you're going to be using a private puppet module, setup SSH keys for the root user and add them to your GitHub account (either as keys
-   for your user, or deploy keys on the repository).
+7. If you're going to be using a private puppet module, setup SSH keys for the root user and add them to your GitHub account (either as keys for your user, or deploy keys on the repository).
 
 ##Customization
 
@@ -95,14 +94,14 @@ Aside from the list of modules you require in your Puppetfile, the rest of the c
 
 In addition to the usual binding of values to keys (class parameters), the Hiera data also determines which classes to apply based on the values in the ``classes`` and ``exclude_classes`` arrays. These are utilized in ``site.pp``. The ``classes`` and ``exclude_classes`` arrays are pulled in using Array merging, meaning that rather than stopping at the first instance found in the hierarchy, Hiera/Puppet will merge all instances of the respective arrays from all data sources into one. The ``classes`` array determines the classes that will be applied to a node; any classes in ``exclude_classes`` will be removed from the final ``classes`` list before applying to the node.
 
-If you're OK with the defaults (such as my [puppet-archlinux-macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina) module on Arch Linux MacBooks and
-[puppet-archlinux-workstation](https://github.com/jantman/puppet-archlinux-workstation) on any Arch Linux machine), you should only need to update the values in ``user_config.yaml``.
+If you're OK with the defaults (such as my [archlinux_macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina) module on Arch Linux MacBooks and
+[archlinux_workstation](https://github.com/jantman/puppet-archlinux-workstation) on any Arch Linux machine), you should only need to update the values in ``user_config.yaml``.
 
-If you want to remove my ``archlinux-macbookretina`` module, for example, add the following to ``user_config.yaml``:
+If you want to remove my ``archlinux_macbookretina`` module, for example, add the following to ``user_config.yaml``:
 
 ```
 exclude_classes:
-  - archlinux-macbookretina
+  - archlinux_macbookretina
 ```
 
 ###Sensitive Information
