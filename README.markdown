@@ -120,8 +120,9 @@ To set up the project on one of your own machines:
 2. ``git clone https://github.com/jantman/workstation-bootstrap.git workstation-bootstrap`` (or your fork, if you made one)
 3. ``cd workstation-bootstrap``
 4. ``./setup.sh``
-5. Deploy the modules with r10k and then run Puppet: ``./run_r10k_puppet.sh``
-6. After the initial run, set the password for your newly-created user.
+5. Deploy the modules with r10k and then run Puppet: ``./run_r10k_puppet.sh``. Assuming you're running under Arch Linux and using my [archlinux_workstation](https://github.com/jantman/puppet-archlinux-workstation) module, you'll want to do this either in a screen session or redirect the output to a file; at some point in the run, Xorg and SDDM will start up and your display will turn graphical. You can either login or use ``Ctrl + Alt + F2`` to get to a text console. If puppet dies when the ``sddm`` service starts, just re-run it.
+6. After the initial run, set the password for your newly-created user and then reboot.
+7. Log in as your user.
 
 
 ## Usage
