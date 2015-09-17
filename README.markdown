@@ -62,6 +62,7 @@ Distro-specific instructions follow.
    [puppet-archlinux-macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina)
    or the [Arch Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide), or
    [phoenix_install.md](phoenix_install.md) documenting my latest desktop machine build/install).
+2. If you're on a HiDPI display like a MacBook Retina, you may want to increase the console font size, i.e. ``setfont sun12x22``
 2. ``dhcpcd <interface name>`` to get minimally-working DHCP, or whatever you want to do to get connectivity to the outside world.
 3. if desired, ``pacman -S openssh && systemctl start sshd`` so you can work remotely
 4. Make sure everything is up to date: ``pacman -Syu``
