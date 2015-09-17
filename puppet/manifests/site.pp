@@ -2,7 +2,7 @@
 #
 # This manifest sets up the requirements for the puppetlabs-firewall module,
 # includes classes defined in Hiera, and anything else that _must_ be done
-# in top-scope.
+# in top-scope. It also adds a default firewall rule to allow SSH.
 #
 # See README.markdown for usage and further information.
 #
@@ -44,6 +44,11 @@ class workstation_bootstrap::firewall_pre {
     proto   => 'all',
     ctstate => ['RELATED', 'ESTABLISHED'],
     action  => 'accept',
+  }->
+  firewall { '004 accept SSH':
+    dport    => 22,
+    proto    => 'tcp',
+    action   => 'accept',
   }
 }
 
