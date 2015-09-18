@@ -13,10 +13,10 @@ forge 'forge.puppetlabs.com'
 
 ### modules ###
 mod 'archlinux_workstation',
-  :git => 'https://github.com/jantman/puppet-archlinux-workstation.git',
+  :git => 'https://github.com/jantman/puppet-archlinux-workstation.git'
 
 mod 'archlinux_macbookretina',
-  :git => 'https://github.com/jantman/puppet-archlinux-macbookretina.git',
+  :git => 'https://github.com/jantman/puppet-archlinux-macbookretina.git'
 
 ### module dependencies ###
 mod 'puppetlabs/stdlib', '4.9.0'
