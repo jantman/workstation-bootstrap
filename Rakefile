@@ -20,4 +20,4 @@ end
 
 # task to run all tests
 desc "run all tests (lint, metadata, spec, syntax, validate)"
-task :test => [:lint, :metadata, :syntax, :validate, :spec]
+task :test => [:lint, :syntax, :validate, :spec]
