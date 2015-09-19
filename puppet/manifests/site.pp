@@ -19,6 +19,7 @@ Firewall {
   require => Class['workstation_bootstrap::firewall_pre'],
 }
 
+# Setup puppetlabs-firewall and set default rules
 class workstation_bootstrap::firewall_pre {
   Firewall {
     require => undef,
@@ -26,8 +27,8 @@ class workstation_bootstrap::firewall_pre {
 
   # Default firewall rules
   firewall { '000 accept all icmp':
-    proto   => 'icmp',
-    action  => 'accept',
+    proto  => 'icmp',
+    action => 'accept',
   }->
   firewall { '001 accept all to lo interface':
     proto   => 'all',
@@ -46,17 +47,18 @@ class workstation_bootstrap::firewall_pre {
     action  => 'accept',
   }->
   firewall { '004 accept SSH':
-    dport    => 22,
-    proto    => 'tcp',
-    action   => 'accept',
+    dport  => 22,
+    proto  => 'tcp',
+    action => 'accept',
   }
 }
 
+# set default puppetlabs-firewall drop rule
 class workstation_bootstrap::firewall_post {
   firewall { '999 drop all':
-    proto   => 'all',
-    action  => 'drop',
-    before  => undef,
+    proto  => 'all',
+    action => 'drop',
+    before => undef,
   }
 }
 
