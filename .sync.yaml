@@ -1,4 +1,5 @@
 ---
-# puppetlabs modulesync overrides for workstation-bootstrap
 .gitignore:
   unmanaged: true
+spec/spec_helper_acceptance.rb:
+  module_name: workstation_bootstrap
