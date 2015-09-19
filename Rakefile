@@ -13,6 +13,7 @@ PuppetLint::RakeTask.new :lint do |config|
     "spec/**/*.pp",
     "pkg/**/*.pp",
     "vendor/**/*.pp",
+    "puppet/modules/**/*.pp",
   ]
 end
 
