@@ -1,0 +1,4 @@
+---
+# puppetlabs modulesync overrides for workstation-bootstrap
+.gitignore:
+  unmanaged: true
