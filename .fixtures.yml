@@ -1,6 +1,20 @@
 fixtures:
   repositories:
+    archlinux_workstation:
+      repo: "https://github.com/jantman/puppet-archlinux-workstation.git"
+    archlinux_macbookretina:
+      repo: "https://github.com/jantman/puppet-archlinux-macbookretina.git"
     stdlib: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
-    firewall: "git://github.com/puppetlabs/puppetlabs-firewall.git"
+    sudo: "https://github.com/saz/puppet-sudo.git"
+    concat: "https://github.com/puppetlabs/puppetlabs-concat.git"
+    firewall: "https://github.com/puppetlabs/puppetlabs-firewall.git"
+    # vcsrepo
+    staging: "https://github.com/nanliu/puppet-staging.git"
+    sysctl: "https://github.com/duritong/puppet-sysctl.git"
+    inifile: "https://github.com/puppetlabs/puppetlabs-inifile.git"
+    # for https://github.com/saz/puppet-ssh/pull/149
+    ssh:
+      repo: "https://github.com/jantman/puppet-ssh.git"
+      ref: "arch_puppet4"
   symlinks:
     workstation_bootstrap: "#{source_dir}"
