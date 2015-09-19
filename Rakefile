@@ -8,6 +8,7 @@ PuppetLint::RakeTask.new :lint do |config|
   config.disable_checks = [
     '80chars',
     'class_inherits_from_params_class',
+    'autoloader_layout',
   ]
   config.ignore_paths = [
     "spec/**/*.pp",
