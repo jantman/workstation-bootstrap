@@ -18,6 +18,9 @@ PuppetLint::RakeTask.new :lint do |config|
   ]
 end
 
+# ignore deployed modules
+PuppetSyntax.exclude_paths << "puppet/modules/**/*"
+
 # task to run all tests
 desc "run all tests (lint, metadata, spec, syntax, validate)"
 task :test => [:lint, :syntax, :validate, :spec]
