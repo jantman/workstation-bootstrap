@@ -120,20 +120,20 @@ To set up the project on one of your own machines:
 1. ``cd /etc/puppetlabs/code``
 2. ``git clone https://github.com/jantman/workstation-bootstrap.git workstation-bootstrap`` (or your fork, if you made one)
 3. ``cd workstation-bootstrap``
-4. ``./setup.sh``
-5. Deploy the modules with r10k and then run Puppet: ``./run_r10k_puppet.sh``. Assuming you're running under Arch Linux and using my [archlinux_workstation](https://github.com/jantman/puppet-archlinux-workstation) module, you'll want to do this either in a screen session or redirect the output to a file; at some point in the run, Xorg and SDDM will start up and your display will turn graphical. You can either login or use ``Ctrl + Alt + F2`` to get to a text console. If puppet dies when the ``sddm`` service starts, just re-run it.
+4. ``./bin/setup.sh``
+5. Deploy the modules with r10k and then run Puppet: ``./bin/run_r10k_puppet.sh``. Assuming you're running under Arch Linux and using my [archlinux_workstation](https://github.com/jantman/puppet-archlinux-workstation) module, you'll want to do this either in a screen session or redirect the output to a file; at some point in the run, Xorg and SDDM will start up and your display will turn graphical. You can either login or use ``Ctrl + Alt + F2`` to get to a text console. If puppet dies when the ``sddm`` service starts, just re-run it.
 6. After the initial run, set the password for your newly-created user and then reboot.
 7. Log in as your user.
 
 
 ## Usage
 
-* To run the r10k deploy, ``./run_r10k.sh``
-* To run puppet on ``site.pp``, ``./run_puppet.sh``
-* To run r10k and then puppet, ``./run_r10k_puppet.sh``
-* To find the value of a given key in the current Hiera data, ``./hiera_show_value.sh KEY_NAME``
+* To run the r10k deploy, ``./bin/run_r10k.sh``
+* To run puppet on ``site.pp``, ``./bin/run_puppet.sh``
+* To run r10k and then puppet, ``./bin/run_r10k_puppet.sh``
+* To find the value of a given key in the current Hiera data, ``./bin/hiera_show_value.sh KEY_NAME``
 
-``./run_puppet.sh`` and ``./run_r10k_puppet.sh`` will add any command-line arguments that you specify to the ``puppet`` command before the path to ``site.pp``.
+``./bin/run_puppet.sh`` and ``./bin/run_r10k_puppet.sh`` will add any command-line arguments that you specify to the ``puppet`` command before the path to ``site.pp``.
 
 ##Reference
 
@@ -170,8 +170,8 @@ By default, the Puppetfile also includes my personal "privatepuppet" module. You
 The Hiera hierarchy used is as follows:
 
 * ``defaults.yaml`` - default configuration and classes
-* ``os.family/Archlinux.yaml`` - include ``archlinux-workstation`` class on Arch Linux
-* ``os.family_productname/Archlinux_MacBookPro10,1.yaml`` - include ``
+* ``osfamily/Archlinux.yaml`` - include ``archlinux-workstation`` class on Arch Linux
+* ``osfamily_productname/Archlinux_MacBookPro10,1.yaml`` and ``osfamily_productname/Archlinux_MacBookPro11,4.yaml`` - include ``archlinux_macbookretina``
 * ``user_config.yaml`` - user-specific settings, such as your login username, and preference-related configuration; ideally, this should be the only file changed by users customizing this project
 
 ##Testing
