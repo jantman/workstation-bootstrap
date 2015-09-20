@@ -40,5 +40,5 @@ mod 'puppetlabs/inifile', '1.4.2' # dependency of jantman/archlinux_macbookretin
 # (either replace this with your own, or just remove it) #
 ##########################################################
 
-#mod 'privatepuppet',
-#  :git => 'git@github.com:jantman/privatepuppet.git'
+mod 'privatepuppet',
+  :git => 'git@github.com:jantman/privatepuppet.git'

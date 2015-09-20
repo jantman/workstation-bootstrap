@@ -6,3 +6,6 @@
 
 # the username for your login user
 username: jantman
+
+classes:
+  - privatepuppet

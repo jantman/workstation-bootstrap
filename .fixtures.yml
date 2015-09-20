@@ -13,5 +13,10 @@ fixtures:
     sysctl: "https://github.com/duritong/puppet-sysctl.git"
     inifile: "https://github.com/puppetlabs/puppetlabs-inifile.git"
     ssh: "https://github.com/saz/puppet-ssh.git"
+    ##############################################
+    ### jantman personal module - private repo ###
+    ##############################################
+    privatepuppet:
+      repo: "git@github.com:jantman/privatepuppet.git"
   symlinks:
     workstation_bootstrap: "#{source_dir}"
