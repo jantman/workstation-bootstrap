@@ -18,8 +18,24 @@ describe 'anyhost' do
   context 'on osfamily Archlinux' do
     let(:params) {{ }}
     let(:facts) {{
-      :osfamily => 'Archlinux',
-      :kernel   => 'Linux',
+                   :kernel          => 'Linux',
+                   :concat_basedir  => '/tmp',
+                   :osfamily        => 'Archlinux',
+                   :operatingsystem => 'Archlinux',
+                   :os              => { 'family' => 'Archlinux', 'name' => 'Archlinux' },
+                   :productname     => 'MacBookPro11,4',
+                   :dmi             => { 'product' => { 'name' => 'MacBookPro11,4' } },
+                   :interfaces      => 'enp4s0,lo',
+                   :networking      => {
+                     'interfaces' => {
+                       'enp4s0' => {
+                         'dhcp' => "192.168.0.1",
+                       },
+                       'lo' => {
+                         'ip' => "127.0.0.1",
+                       }
+                     },
+                   }
     }}
 
     it { should compile.with_all_deps }
@@ -36,8 +52,11 @@ describe 'anyhost' do
   context 'on osfamily RedHat' do
     let(:params) {{ }}
     let(:facts) {{
-      :osfamily => 'RedHat',
-      :kernel   => 'Linux',
+                   :kernel      => 'Linux',
+                   :osfamily    => 'RedHat',
+                   :os          => { 'family' => 'RedHat' },
+                   :productname => 'MacBookPro11,4',
+                   :dmi         => { 'product' => { 'name' => 'MacBookPro11,4' } },
     }}
 
     it { should compile.with_all_deps }

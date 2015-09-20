@@ -3,8 +3,8 @@
   - yaml
 :hierarchy:
   - defaults
-  - "os.family/%{::os.family}"
-  - "os.family_productname/%{::os.family}_%{::productname}"
+  - "osfamily/%{::osfamily}"
+  - "osfamily_productname/%{::osfamily}_%{::productname}"
   - user_config
 :yaml:
   :datadir: /etc/puppetlabs/code/workstation-bootstrap/puppet/hiera

@@ -15,6 +15,6 @@ fixtures:
     # for https://github.com/saz/puppet-ssh/pull/149
     ssh:
       repo: "https://github.com/jantman/puppet-ssh.git"
-      ref: "arch_puppet4"
+      branch: "arch_puppet4"
   symlinks:
     workstation_bootstrap: "#{source_dir}"
