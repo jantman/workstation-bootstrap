@@ -12,9 +12,6 @@ fixtures:
     staging: "https://github.com/nanliu/puppet-staging.git"
     sysctl: "https://github.com/duritong/puppet-sysctl.git"
     inifile: "https://github.com/puppetlabs/puppetlabs-inifile.git"
-    # for https://github.com/saz/puppet-ssh/pull/149
-    ssh:
-      repo: "https://github.com/jantman/puppet-ssh.git"
-      branch: "arch_puppet4"
+    ssh: "https://github.com/saz/puppet-ssh.git"
   symlinks:
     workstation_bootstrap: "#{source_dir}"
