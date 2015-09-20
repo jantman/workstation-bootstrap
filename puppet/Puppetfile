@@ -11,6 +11,9 @@ forge 'forge.puppetlabs.com'
 # workstation-bootstrap upstream code #
 #######################################
 
+# this needs to be here to preserve the symlink
+mod 'workstation_bootstrap', :local => true
+
 ### modules ###
 mod 'archlinux_workstation',
   :git => 'https://github.com/jantman/puppet-archlinux-workstation.git'

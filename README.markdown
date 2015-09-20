@@ -84,7 +84,8 @@ Here's how to make this project do what you want:
 1. Fork this repository. Make sure that the "production" branch is the primary branch.
 2. Edit ``puppet/Puppetfile`` to contain all of the modules that you need.
 3. Edit the files under ``puppet/hiera/`` to do what you need. See below for more information.
-4. Commit and push your changes.
+4. Edit ``puppet/manifests/site.pp`` as needed, though the default should be acceptable for most people.
+5. Commit and push your changes.
 
 The [Reference](#reference) section below describes what this project provides by default, what you _have_ to change, and some of the common things you may want to change.
 
@@ -138,13 +139,17 @@ To set up the project on one of your own machines:
 
 ###site.pp manifest
 
-``site.pp`` contains the entirety of the code for the ``workstation-bootstrap`` module, which must be evaluated in top-scope.
+``site.pp`` contains the code which must be run in a top scope.
 
 At this moment, what this code does is:
 
 * Setup for the [puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall) module as documented in its readme.
-* Declare the ``firewall``, ``workstation-bootstrap::firewall_pre`` and ``workstation-bootstrap::firewall_post`` classes for default firewall rules.
 * Include classes via Hiera data.
+
+###workstation_bootstrap module
+
+This module has two classes, ``workstation_bootstrap::firewall_pre`` and ``workstation_bootstrap::firewall_post``, which
+do setup of Firewall module rules.
 
 ###Puppetfile
 
@@ -171,4 +176,5 @@ The Hiera hierarchy used is as follows:
 
 ##Testing
 
-A ``Vagrantfile`` is provided that spins up an Arch Linux VM with puppet installed, suitable for testing your configuration.
+A ``Vagrantfile`` is provided that spins up an Arch Linux VM with puppet installed, suitable for testing your configuration. There's also testing with [rspec-puppet](http://rspec-puppet.com/),
+but note that there are a LOT of hacky workarounds to get it to work with this code (which isn't really a module, and makes heavy use of ``site.pp``).

@@ -14,9 +14,6 @@ resources { 'firewall':
   purge => true
 }
 
-class {'workstation_bootstrap::firewall_post': }
-class {'workstation_bootstrap::firewall_pre': }
-
 Firewall {
   before  => Class['workstation_bootstrap::firewall_post'],
   require => Class['workstation_bootstrap::firewall_pre'],
