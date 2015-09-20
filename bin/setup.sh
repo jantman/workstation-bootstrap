@@ -2,7 +2,7 @@
 
 MYSOURCE="$(cd "$(dirname "$0")" && pwd)"
 PUPPETDIR=/etc/puppetlabs/code
-SETUP_LOC=$PUPPETDIR/workstation-bootstrap
+SETUP_LOC=$PUPPETDIR/workstation-bootstrap/bin
 if [[ "$MYSOURCE" != "$SETUP_LOC" ]]; then
     >&2 echo "ERROR: setup script must be located at: $SETUP_LOC (not $MYSOURCE)"
     exit 1
