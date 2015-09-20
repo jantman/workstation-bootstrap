@@ -7,7 +7,7 @@
 # See README.markdown for usage and further information.
 #
 # The canonical source of the latest unmodified version of this file is:
-# <https://github.com/jantman/workstation-bootstrap/blob/production/puppet/manifests/0_site.pp>
+# <https://github.com/jantman/workstation-bootstrap/blob/master/puppet/manifests/site.pp>
 #
 
 resources { 'firewall':

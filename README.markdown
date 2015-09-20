@@ -82,7 +82,7 @@ Server = http://archrepo.jasonantman.com/current
 
 Here's how to make this project do what you want:
 
-1. Fork this repository. Make sure that the "production" branch is the primary branch.
+1. Fork this repository.
 2. Edit ``puppet/Puppetfile`` to contain all of the modules that you need.
 3. Edit the files under ``puppet/hiera/`` to do what you need. See below for more information.
 4. Edit ``puppet/manifests/site.pp`` as needed, though the default should be acceptable for most people.
