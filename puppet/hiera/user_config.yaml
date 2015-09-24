@@ -6,6 +6,8 @@
 
 # the username for your login user
 username: jantman
+archlinux_workstation::ssh::extra_options:
+  PubkeyAcceptedKeyTypes: +ssh-dss
 
 classes:
   - privatepuppet
