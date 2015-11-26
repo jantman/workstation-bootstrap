@@ -9,3 +9,4 @@ classes:
   - archlinux_workstation::all
 
 archlinux_workstation::username: "%{alias('username')}"
+archlinux_workstation::cronie::mail_command: "/usr/local/bin/gmailer.py"
