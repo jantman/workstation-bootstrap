@@ -43,3 +43,5 @@ mod 'garethr/docker', '4.1.1' # dependency of jantman/archlinux_workstation
 
 mod 'privatepuppet',
   :git => 'git@github.com:jantman/privatepuppet.git'
+
+mod 'puppetlabs/mysql', '3.6.1'
