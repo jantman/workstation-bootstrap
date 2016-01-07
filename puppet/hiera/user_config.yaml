@@ -6,6 +6,7 @@
 
 # the username for your login user
 username: jantman
+archlinux_workstation::makepkg_packager: Jason Antman <jason@jasonantman.com>
 archlinux_workstation::ssh::extra_options:
   PubkeyAcceptedKeyTypes: +ssh-dss
 
