@@ -63,3 +63,4 @@ options root=PARTUUID=f40aed62-78f3-4571-8f5e-827c6527fe42 rw
 18. ``umount -R /mnt`` and then ``reboot``
 19. Boot the installed system and login as root.
 20. Continue with the initial OS setup as documented in [README.md](README.md).
+21. Set up a swapfile per the [Arch wiki docs](https://wiki.archlinux.org/index.php/Swap#Swap_file).
