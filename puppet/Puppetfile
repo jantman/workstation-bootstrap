@@ -45,3 +45,4 @@ mod 'privatepuppet',
   :git => 'git@github.com:jantman/privatepuppet.git'
 
 mod 'puppetlabs/mysql', '3.6.1'
+mod 'cyberious/apm', '0.1.1'
