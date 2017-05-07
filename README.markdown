@@ -136,6 +136,25 @@ To set up the project on one of your own machines:
 
 ``./bin/run_puppet.sh`` and ``./bin/run_r10k_puppet.sh`` will add any command-line arguments that you specify to the ``puppet`` command before the path to ``site.pp``.
 
+## Firewall Rules and Docker
+
+The pre-1.0.0 behavior of this module was to include a global firewall resource purge,
+to remove all unmanaged iptables rules:
+
+```
+resources { 'firewall':
+  purge => true
+}
+```
+
+However, if you were running Docker (even configured via Puppet), this would purge
+all of the Docker-added iptables rules, and break Docker networking.
+
+A workaround for this is to set ``firewall_purge: false`` in your ``user_config.yaml``.
+This will disable global purging of rules, and you will need to configure purging on
+a per-chain basis in your own code, with the [fireallchain](https://forge.puppet.com/puppetlabs/firewall/1.8.0/types#firewallchain)
+type.
+
 ##Reference
 
 ###site.pp manifest

@@ -1,3 +1,6 @@
+2017-05-07 Release 1.0.0
+- allow disabling global firewall module purge via hiera setting
+
 2014-03-15 Release 0.0.1
 - initial module creation
 - migration of a bunch of stuff from https://github.com/jantman/puppet-archlinux-macbookretina

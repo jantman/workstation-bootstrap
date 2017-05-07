@@ -10,8 +10,13 @@
 # <https://github.com/jantman/workstation-bootstrap/blob/master/puppet/manifests/site.pp>
 #
 
-resources { 'firewall':
-  purge => true
+if (lookup('firewall_purge', Boolean, 'first', true) == true) {
+  notice("hiera 'firewall_purge' is true, or default; purging all unmanaged iptables rules")
+  resources { 'firewall':
+    purge => true
+  }
+} else {
+  notice("hiera 'firewall_purge' is *false*, not purging any unmanaged iptables rules globally")
 }
 
 Firewall {
