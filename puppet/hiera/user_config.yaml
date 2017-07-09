@@ -13,7 +13,6 @@ archlinux_workstation::ssh::extra_options:
   PubkeyAcceptedKeyTypes: +ssh-dss
 archlinux_workstation::ssh::allow_users:
   - jantman
-  - jackie
 
 classes:
   - privatepuppet

@@ -1,3 +1,6 @@
+2017-07-09 Release 1.1.0
+- bump saz/sudo requirement per jantman/puppet-archlinux-workstation
+
 2017-05-07 Release 1.0.0
 - allow disabling global firewall module purge via hiera setting
 
