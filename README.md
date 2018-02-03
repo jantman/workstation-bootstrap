@@ -2,7 +2,7 @@
 
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/0.1.0/active.svg)](http://www.repostatus.org/#active)
 
-####Table of Contents
+#### Table of Contents
 
 1. [Overview](#overview)
     * [Warning](#warning)
@@ -22,7 +22,7 @@
     * [Hiera Ordering](#hiera-ordering)
 7. [Testing](#testing)
 
-##Overview
+## Overview
 
 This is my example of [r10k](https://github.com/adrienthebo/r10k)-based Puppet management for my personal workstations (desktop and laptop).
 It aims to let me configure my personal boxes with Puppet, and maintain more or less the same environment (installed packages,
@@ -38,16 +38,16 @@ use with r10k, a ``site.pp`` main manifest (currently just used to setup the top
 your [Hiera](http://docs.puppetlabs.com/hiera/latest/) data, and some support scripts to set things up and keep them running
 smoothly. You simply need to modify the Puppetfile and Hiera data and start using it!
 
-###Warning
+### Warning
 
 __WARNING__: If you run this project unmodified on an existing machine, it WILL do very bad things. It's recommended that you:
 
 1. Run this on a brand new machine, and review all upstream changes before running again.
 2. Carefully review the defaults to determine if they're acceptable to you.
 
-##Prerequisites
+## Prerequisites
 
-###General
+### General
 
 To use this, you'll need:
 
@@ -57,7 +57,7 @@ To use this, you'll need:
 
 Distro-specific instructions follow.
 
-###Arch Linux
+### Arch Linux
 
 1. Do a default, base install of Arch (i.e. see instructions in
    [puppet-archlinux-macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina)
@@ -78,7 +78,7 @@ Server = http://archrepo.jasonantman.com/current
 ```
 7. If you're going to be using a private puppet module, setup SSH keys for the root user and add them to your GitHub account (either as keys for your user, or deploy keys on the repository).
 
-##Customization
+## Customization
 
 Here's how to make this project do what you want:
 
@@ -90,7 +90,7 @@ Here's how to make this project do what you want:
 
 The [Reference](#reference) section below describes what this project provides by default, what you _have_ to change, and some of the common things you may want to change.
 
-###Hiera Data
+### Hiera Data
 
 Aside from the list of modules you require in your Puppetfile, the rest of the configuration resides in Hiera data, including the list of classes to apply to each node. This makes it easier to separate the upstream code for this repository from your own configuration.
 
@@ -106,7 +106,7 @@ exclude_classes:
   - archlinux_macbookretina
 ```
 
-###Sensitive Information
+### Sensitive Information
 
 Most users will have some sensitive information that they want on their machine (SSH keys, API credentials, personal information) and don't want in a public GitHub repository. There are three simple methods of handling this:
 
@@ -114,7 +114,7 @@ Most users will have some sensitive information that they want on their machine 
 2. Manage your user-specific information in a puppet module that's stored locally (and deployed however you want), using r10k's [local module](https://github.com/puppetlabs/r10k/blob/master/doc/puppetfile.mkd#local) support.
 3. Duplicate your fork of the upstream repository and make it private. This is the last option, as it makes it more difficult to pull in upstream changes or see what's changed upstream since you created the fork.
 
-##Setup
+## Setup
 
 To set up the project on one of your own machines:
 
@@ -155,9 +155,9 @@ This will disable global purging of rules, and you will need to configure purgin
 a per-chain basis in your own code, with the [fireallchain](https://forge.puppet.com/puppetlabs/firewall/1.8.0/types#firewallchain)
 type.
 
-##Reference
+## Reference
 
-###site.pp manifest
+### site.pp manifest
 
 ``site.pp`` contains the code which must be run in a top scope.
 
@@ -166,7 +166,7 @@ At this moment, what this code does is:
 * Setup for the [puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall) module as documented in its readme.
 * Include classes via Hiera data.
 
-###workstation_bootstrap module
+### workstation_bootstrap module
 
 This module has two classes, ``workstation_bootstrap::firewall_pre`` and ``workstation_bootstrap::firewall_post``, which
 do setup of Firewall module rules.
@@ -174,7 +174,7 @@ do setup of Firewall module rules.
 This module currently lives in ``modules/workstation_bootstrap``, as a workaround until r10k 2.1.0+ is released containing
 the fix for [RK-149](https://tickets.puppetlabs.com/browse/RK-149) which will allow us to keep a local module in the moduledir.
 
-###Puppetfile
+### Puppetfile
 
 * [archlinux_workstation](https://github.com/jantman/puppet-archlinux-workstation)
 * [puppetlabs/stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib)
@@ -188,7 +188,7 @@ the fix for [RK-149](https://tickets.puppetlabs.com/browse/RK-149) which will al
 
 By default, the Puppetfile also includes my personal "privatepuppet" module. You should comment this out or replace it with your own personal module(s).
 
-###Hiera
+### Hiera
 
 The Hiera hierarchy used is as follows:
 
@@ -197,7 +197,7 @@ The Hiera hierarchy used is as follows:
 * ``osfamily_productname/Archlinux_MacBookPro10,1.yaml`` and ``osfamily_productname/Archlinux_MacBookPro11,4.yaml`` - include ``archlinux_macbookretina``
 * ``user_config.yaml`` - user-specific settings, such as your login username, and preference-related configuration; ideally, this should be the only file changed by users customizing this project
 
-##Testing
+## Testing
 
 A ``Vagrantfile`` is provided that spins up an Arch Linux VM with puppet installed, suitable for testing your configuration. There's also testing with [rspec-puppet](http://rspec-puppet.com/),
 but note that there are a LOT of hacky workarounds to get it to work with this code (which isn't really a module, and makes heavy use of ``site.pp``).
