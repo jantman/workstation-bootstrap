@@ -24,19 +24,14 @@
 
 ## Overview
 
-This is my example of [r10k](https://github.com/adrienthebo/r10k)-based Puppet management for my personal workstations (desktop and laptop).
-It aims to let me configure my personal boxes with Puppet, and maintain more or less the same environment (installed packages,
-configuration) on both/all of them.
+This is an example of a puppet/[r10k](https://github.com/puppetlabs/r10k) [control repository](https://puppet.com/docs/pe/latest/code_management/control_repo.html) for use with my [archlinux_workstation](https://forge.puppet.com/jantman/archlinux_workstation) and optionally [archlinux_macbookretina](https://forge.puppet.com/jantman/archlinux_macbookretina) Puppet modules. This specific repository includes some personal configuration of mine, and is intended to be forked and modified as described below. This is intended to be a generic framework for anyone who wants to use Puppet to manage their workstation's configuration. The project provides some sane (though opinionated) defaults, and instructions for how to change them. The defaults are geared towards Arch Linux, but the core in this repository can be used for any distribution, or just as an example/starting point.
 
-This is intended to be a generic framework for anyone who wants to use Puppet to manage their workstation's configuration. The project
-provides some sane (though opinionated) defaults, and instructions for how to change them. The defaults are geared towards Arch
-Linux, but the core in this repository can be used for any distribution, or just as an example/starting point.
+In general, what this repository has is:
 
-The general concept is that this repository holds a [Puppetfile](https://github.com/puppetlabs/r10k/blob/master/doc/puppetfile.mkd) for
-use with r10k, a ``site.pp`` main manifest (currently just used to setup the top-scope things needed for
-[puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall)),
-your [Hiera](http://docs.puppetlabs.com/hiera/latest/) data, and some support scripts to set things up and keep them running
-smoothly. You simply need to modify the Puppetfile and Hiera data and start using it!
+* a [Puppetfile](#puppetfile) for use with r10k, to install all dependencies.
+* a [site.pp main manifest](#site.pp-manifest), which sets up the top-scope things needed for [puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall)) and uses your [hiera data](#hiera) to include the classes you want to use.
+* Some helper scripts under ``bin/`` to aid in installation and use. See [Setup](#setup) and [Usage](#usage).
+* Documentation on initial setup of an Arch computer to use with this repo.
 
 ### Warning
 
@@ -51,39 +46,29 @@ __WARNING__: If you run this project unmodified on an existing machine, it WILL 
 
 To use this, you'll need:
 
-* A working OS install
-* ``puppet`` (4x; the current version in the Arch repo), [r10k](https://github.com/adrienthebo/r10k) (see below) and ``git`` installed
+* A working Linux install (this repo is geared towards Arch)
+* ``puppet`` (whatever version Arch ships, usually the latest release), [r10k](https://github.com/adrienthebo/r10k) (see below) and ``git`` installed
 * A text editor of your choice (usable without a GUI / X environment)
 
 Distro-specific instructions follow.
 
 ### Arch Linux
 
-1. Do a default, base install of Arch (i.e. see instructions in
-   [puppet-archlinux-macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina)
-   or the [Arch Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide), or
-   [phoenix_install.md](phoenix_install.md) documenting my latest desktop machine build/install).
+1. Do a default, base install of Arch (i.e. see instructions in the [Arch Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide), or my personal install notes in [phoenix_install.md](https://github.com/jantman/workstation-bootstrap/blob/master/phoenix_install.md) or [jackiepc_install.md](https://github.com/jantman/workstation-bootstrap/blob/master/jackiepc_install.md)).
 2. If you're on a HiDPI display like a MacBook Retina, you may want to increase the console font size, i.e. ``setfont sun12x22``
 2. Find your network interface name (``ip addr``) and get DHCP: ``systemctl start dhcpcd@<interface name>``, or get connectivity howerver else you want. You should now have an IP address, and networking should work (i.e. ``ping www.google.com``).
-3. if desired, ``pacman -S openssh && systemctl start sshd`` so you can work remotely
+3. If desired, ``pacman -S openssh && systemctl start sshd`` so you can work remotely.
 4. Make sure everything is up to date: ``pacman -Syu``
-5. Install Puppet and some packages required to build ruby things: ``pacman -S base-devel puppet git lsb-release``
-6. Install r10k. It's currently not in the Arch packages repo or included in the Arch puppet package; for the time being,
-you can find the PKGBUILDs that I use for r10k and its dependencies in my [arch-pkgbuilds](https://github.com/jantman/arch-pkgbuilds) GitHub
-repo, or you can use my built packages via the following pacman repo configuration (append to the end of ``/etc/pacman.conf``):
-```
-[jantman]
-SigLevel = Optional TrustedOnly
-Server = http://archrepo.jasonantman.com/current
-```
-7. If you're going to be using a private puppet module, setup SSH keys for the root user and add them to your GitHub account (either as keys for your user, or deploy keys on the repository).
+5. Install Puppet and some packages required to build ruby things: ``pacman -S base-devel puppet git lsb-release ruby``
+6. Install r10k. It's currently not in an official Arch package; to get the latest version, use ``gem install r10k``
+7. If you're going to be using private puppet module(s), setup SSH keys for the root user and add them to your GitHub account (either as keys for your user, or deploy keys on the repository).
 
 ## Customization
 
 Here's how to make this project do what you want:
 
 1. Fork this repository.
-2. Edit ``puppet/Puppetfile`` to contain all of the modules that you need.
+2. Edit ``puppet/Puppetfile`` to contain all of the modules that you need as well as their dependencies. Unlike ``puppet module install``, r10k does not have dependency resolution.
 3. Edit the files under ``puppet/hiera/`` to do what you need. See below for more information.
 4. Edit ``puppet/manifests/site.pp`` as needed, though the default should be acceptable for most people.
 5. Commit and push your changes.
@@ -126,7 +111,6 @@ To set up the project on one of your own machines:
 6. After the initial run, set the password for your newly-created user and then reboot.
 7. Log in as your user.
 
-
 ## Usage
 
 * To run the r10k deploy, ``./bin/run_r10k.sh``
@@ -134,12 +118,11 @@ To set up the project on one of your own machines:
 * To run r10k and then puppet, ``./bin/run_r10k_puppet.sh``
 * To find the value of a given key in the current Hiera data, ``./bin/hiera_show_value.sh KEY_NAME``
 
-``./bin/run_puppet.sh`` and ``./bin/run_r10k_puppet.sh`` will add any command-line arguments that you specify to the ``puppet`` command before the path to ``site.pp``.
+``./bin/run_puppet.sh`` and ``./bin/run_r10k_puppet.sh`` will add any command-line arguments that you specify to the ``puppet`` command before the path to ``site.pp`` (i.e. ``./bin/run_r10k_puppet.sh --noop`` will end run ``puppet`` with ``--noop``).
 
 ## Firewall Rules and Docker
 
-The pre-1.0.0 behavior of this module was to include a global firewall resource purge,
-to remove all unmanaged iptables rules:
+The pre-1.0.0 behavior of this module was to include a global firewall resource purge, to remove all unmanaged iptables rules:
 
 ```
 resources { 'firewall':
@@ -147,13 +130,21 @@ resources { 'firewall':
 }
 ```
 
-However, if you were running Docker (even configured via Puppet), this would purge
-all of the Docker-added iptables rules, and break Docker networking.
+However, if you were running Docker (even configured via Puppet), this would purge all of the Docker-added iptables rules, and break Docker networking.
 
-A workaround for this is to set ``firewall_purge: false`` in your ``user_config.yaml``.
-This will disable global purging of rules, and you will need to configure purging on
-a per-chain basis in your own code, with the [fireallchain](https://forge.puppet.com/puppetlabs/firewall/1.8.0/types#firewallchain)
-type.
+A workaround for this is to set ``firewall_purge: false`` in your ``user_config.yaml``. This will disable global purging of rules, and you will need to configure purging on a per-chain basis in your own code, with the [fireallchain](https://forge.puppet.com/puppetlabs/firewall/1.8.0/types#firewallchain) type. An example of this that's safe for Docker is only purging the IPv4 INPUT and OUTPUT chains:
+
+```
+firewallchain {'INPUT:filter:IPv4':
+  ensure => present,
+  purge  => true,
+}
+
+firewallchain {'OUTPUT:filter:IPv4':
+  ensure => present,
+  purge  => true,
+}
+```
 
 ## Reference
 
@@ -169,11 +160,12 @@ At this moment, what this code does is:
 ### workstation_bootstrap module
 
 This module has two classes, ``workstation_bootstrap::firewall_pre`` and ``workstation_bootstrap::firewall_post``, which
-do setup of Firewall module rules.
+do setup of default Firewall module rules, including accepting SSH on port 22.
 
 ### Puppetfile
 
-* [archlinux_workstation](https://github.com/jantman/puppet-archlinux-workstation)
+* [archlinux_workstation](https://forge.puppet.com/jantman/archlinux_workstation)
+* [archlinux_macbookretina](https://forge.puppet.com/jantman/archlinux_macbookretina)
 * [puppetlabs/stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib)
 * [saz/sudo](https://forge.puppetlabs.com/saz/sudo) (dependency of archlinux_workstation)
 * [saz/ssh](https://forge.puppetlabs.com/saz/ssh) (dependency of archlinux_workstation)
