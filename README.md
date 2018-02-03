@@ -171,9 +171,6 @@ At this moment, what this code does is:
 This module has two classes, ``workstation_bootstrap::firewall_pre`` and ``workstation_bootstrap::firewall_post``, which
 do setup of Firewall module rules.
 
-This module currently lives in ``modules/workstation_bootstrap``, as a workaround until r10k 2.1.0+ is released containing
-the fix for [RK-149](https://tickets.puppetlabs.com/browse/RK-149) which will allow us to keep a local module in the moduledir.
-
 ### Puppetfile
 
 * [archlinux_workstation](https://github.com/jantman/puppet-archlinux-workstation)

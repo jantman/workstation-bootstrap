@@ -11,10 +11,7 @@ forge 'forge.puppetlabs.com'
 # workstation-bootstrap upstream code #
 #######################################
 
-# this needs to be here to preserve the symlink
-# but will only work with r10k >= 2.1.0, containing https://tickets.puppetlabs.com/browse/RK-149
-# when these are out, uncomment this and revert eb68687
-#mod 'workstation_bootstrap', :local => true
+mod 'workstation_bootstrap', :local => true
 
 ### modules ###
 mod 'archlinux_workstation',

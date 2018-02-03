@@ -1,1 +1,0 @@
-This directory exists as a workaround until r10k 2.1.0+ is released containing the fix for [RK-149](https://tickets.puppetlabs.com/browse/RK-149) which will allow us to keep a local module in the moduledir.
