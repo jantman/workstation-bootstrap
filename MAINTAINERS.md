@@ -3,4 +3,4 @@
 Maintainers:
   - Jason Antman `jason |at| jasonantman |dot| com`
 
-Tickets: https://tickets.puppet.com/browse/MODULES. Make sure to set component to `jantman-workstation_bootstrap`.
+Tickets: https://github.com/jantman/workstation-bootstrap/issues
