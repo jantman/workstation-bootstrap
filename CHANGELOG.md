@@ -10,6 +10,7 @@
 - Test against modern Puppet versions (puppet4 and puppet5)
 - Fix bug in ``config_version.sh``
 - Convert ``puppet/config/hiera.yaml`` from version 3 to version 5
+- Add spec tests for nodes/hosts
 
 ## 1.1.0 Released 2017-07-09
 

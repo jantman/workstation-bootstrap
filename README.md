@@ -71,7 +71,8 @@ Here's how to make this project do what you want:
 2. Edit ``puppet/Puppetfile`` to contain all of the modules that you need as well as their dependencies. Unlike ``puppet module install``, r10k does not have dependency resolution.
 3. Edit the files under ``puppet/hiera/`` to do what you need. See below for more information.
 4. Edit ``puppet/manifests/site.pp`` as needed, though the default should be acceptable for most people.
-5. Commit and push your changes.
+5. Edit the spec tests under ``spec/hosts`` to match your changes in the previous steps.
+6. Commit and push your changes.
 
 The [Reference](#reference) section below describes what this project provides by default, what you _have_ to change, and some of the common things you may want to change.
 
@@ -188,5 +189,4 @@ The Hiera hierarchy used is as follows:
 
 ## Testing
 
-A ``Vagrantfile`` is provided that spins up an Arch Linux VM with puppet installed, suitable for testing your configuration. There's also testing with [rspec-puppet](http://rspec-puppet.com/),
-but note that there are a LOT of hacky workarounds to get it to work with this code (which isn't really a module, and makes heavy use of ``site.pp``).
+There are unit tests using rspec-puppet. See the ``Rakefile``, and ``.travis.yml`` for an example of running them.
