@@ -7,6 +7,8 @@ forge 'forge.puppetlabs.com'
 # everything here explicitly.
 #
 
+# IMPORTANT: when updating this file, also update .fixtures.yml
+
 #######################################
 # workstation-bootstrap upstream code #
 #######################################
