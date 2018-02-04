@@ -16,4 +16,4 @@ ln -s $PUPPETDIR/workstation-bootstrap/puppet/config/hiera.yaml $PUPPETDIR/hiera
 mkdir -p $PUPPETDIR/environments
 
 echo "Symlinking $PUPPETDIR/environments/production to $PUPPETDIR/workstation-bootstrap/puppet"
-ln -s $PUPPETDIR/workstation-bootstrap/puppet $PUPPETDIR/environments/production
+[[ -e $PUPPETDIR/environments/production ]] || ln -s $PUPPETDIR/workstation-bootstrap/puppet $PUPPETDIR/environments/production
