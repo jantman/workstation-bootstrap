@@ -32,4 +32,4 @@ fixtures:
       repo: "https://github.com/saz/puppet-ssh.git"
       ref: "v2.8.1"
   symlinks:
-    workstation_bootstrap: "#{source_dir}"
+    workstation_bootstrap: "#{source_dir}/puppet/modules/workstation_bootstrap"
