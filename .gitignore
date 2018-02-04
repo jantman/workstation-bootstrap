@@ -17,5 +17,6 @@ log/
 pkg/
 spec/fixtures/manifests/
 spec/fixtures/modules/
+spec/fixtures/hiera.yaml
 tmp/
 vendor/

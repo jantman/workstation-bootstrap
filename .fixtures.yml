@@ -33,3 +33,4 @@ fixtures:
       ref: "v2.8.1"
   symlinks:
     workstation_bootstrap: "#{source_dir}/puppet/modules/workstation_bootstrap"
+    privatepuppet: "#{source_dir}/spec/fixtures/privatepuppet"

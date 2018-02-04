@@ -10,41 +10,12 @@ before_install:
 matrix:
   fast_finish: true
   include:
-  - rvm: 2.3.1
-    dist: trusty
-    env: PUPPET_INSTALL_TYPE=foss BEAKER_debug=true BEAKER_set=default
-    script: bundle exec rake beaker
-    services: docker
-    sudo: required
   - rvm: 2.4.1
     bundler_args: --without system_tests
     env: PUPPET_GEM_VERSION="~> 5.0"
-    script: ["bundle exec rake release_checks_nonparallel", "bundle exec rake clean", "bundle exec rake build", "bundle exec rake docs"]
   - rvm: 2.1.9
     bundler_args: --without system_tests
     env: PUPPET_GEM_VERSION="~> 4.0"
-deploy:
-  - provider: pages
-    skip_cleanup: true
-    github_token:
-      secure: ""
-    local_dir: doc
-    on:
-      repo: jantman/workstation-bootstrap
-      rvm: 2.4.1
-      # all_branches is required to use tags
-      all_branches: true
-      tags: true
-  - provider: puppetforge
-    user: jantman
-    password:
-      secure: ""
-    on:
-      repo: jantman/workstation-bootstrap
-      rvm: 2.4.1
-      # all_branches is required to use tags
-      all_branches: true
-      tags: true
 notifications:
   email:
     on_success: change

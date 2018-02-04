@@ -2,11 +2,17 @@ require 'spec_helper'
 
 describe 'workstation_bootstrap::firewall_pre' do
   let(:facts) {{
-    :osfamily => 'RedHat',
-    :kernel   => 'Linux',
+    :osfamily               => 'RedHat',
+    :kernel                 => 'Linux',
+    :productname            => 'Unknown',
+    :operatingsystem        => 'CentOS',
+    :operatingsystemrelease => '7.2',
+    :selinux                => 'false',
   }}
 
   it { should compile.with_all_deps }
+
+  it { should contain_class('workstation_bootstrap::firewall_pre') }
 
   it { should contain_firewall('000 accept all icmp')
                .with({
