@@ -10,7 +10,6 @@
 .yardwarns
 Gemfile.local
 Gemfile.lock
-bin/
 coverage/
 doc/
 junit/
@@ -20,4 +19,3 @@ spec/fixtures/manifests/
 spec/fixtures/modules/
 tmp/
 vendor/
-
