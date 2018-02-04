@@ -11,6 +11,7 @@
 - Fix bug in ``config_version.sh``
 - Convert ``puppet/config/hiera.yaml`` from version 3 to version 5
 - Add spec tests for nodes/hosts
+- Fix dependency version issues and unmet dependencies in Puppetfile and .fixtures.yml
 
 ## 1.1.0 Released 2017-07-09
 
