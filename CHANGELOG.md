@@ -1,4 +1,4 @@
-## 2.0.0 Released 2018-02-04
+## [2.0.0] Released 2018-02-04
 
 - Update all dependencies and layout via modulesync, to modern Puppet5 version.
 - Properly rename README file to README.md
@@ -15,7 +15,7 @@
 - Add spec tests for nodes/hosts
 - Add ``metadata.json`` to support release process.
 
-## 1.1.0 Released 2017-07-09
+## [1.1.0] Released 2017-07-09
 
 - bump saz/sudo requirement per jantman/puppet-archlinux-workstation
 
@@ -27,3 +27,6 @@
 
 - initial module creation
 - migration of a bunch of stuff from https://github.com/jantman/puppet-archlinux-macbookretina
+
+[2.0.0]: https://github.com/jantman/workstation-bootstrap/compare/1.1.0...2.0.0
+[1.1.0]: https://github.com/jantman/workstation-bootstrap/compare/1.0.0...1.1.0
