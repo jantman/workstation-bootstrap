@@ -1,10 +1,14 @@
 ## 2.0.0 Released 2018-02-04
 
 - Update all dependencies and layout via modulesync, to modern Puppet5 version.
-- Fix layout now that r10k can handle local modules
+- Properly rename README file to README.md
+- Fix layout now that r10k (> 2.1.0) can handle local modules; move workstation_bootstrap manifrsts into ``puppet/modules``
+- Update ``.fixtures.yml`` to pull in proper versions
+- Remove unused files from repo
 - Update documentation
 - Fix unit tests for new layout
 - Test against modern Puppet versions (puppet4 and puppet5)
+- Fix bug in ``config_version.sh``
 
 ## 1.1.0 Released 2017-07-09
 
