@@ -1,10 +1,14 @@
 ---
-:backends:
-  - yaml
-:hierarchy:
-  - defaults
-  - "osfamily/%{::osfamily}"
-  - "osfamily_productname/%{::osfamily}_%{::productname}"
-  - user_config
-:yaml:
-  :datadir: /etc/puppetlabs/code/workstation-bootstrap/puppet/hiera
+version: 5
+hierarchy:
+  - name: "defaults"
+    path: "defaults.yaml"
+  - name: "osfamily"
+    path: "osfamily/%{::osfamily}.yaml"
+  - name: "osfamily_productname"
+    path: "osfamily_productname/%{::osfamily}_%{::productname}.yaml"
+  - name: "user_config"
+    path: "user_config.yaml"
+defaults:
+  data_hash: yaml_data
+  datadir: /etc/puppetlabs/code/workstation-bootstrap/puppet/hiera
