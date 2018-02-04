@@ -13,6 +13,7 @@
 - Fix dependency version issues and unmet dependencies in Puppetfile and .fixtures.yml
 - Stop checking coverage; this doesn't work for node/host tests
 - Add spec tests for nodes/hosts
+- Add ``metadata.json`` to support release process.
 
 ## 1.1.0 Released 2017-07-09
 

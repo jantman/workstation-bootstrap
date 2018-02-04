@@ -178,23 +178,6 @@ Before submitting a pull request, you should run the full pre-release check Rake
 % bundle exec rake release_checks
 ```
 
-### Acceptance Tests
-
-Some Puppet modules also come with acceptance tests, which use [beaker][]. These tests spin up a virtual machine under
-[VirtualBox](https://www.virtualbox.org/), controlled with [Vagrant](http://www.vagrantup.com/), to simulate scripted test
-scenarios. In order to run these, you need both Virtualbox and Vagrant installed on your system.
-
-Run the tests by issuing the following command
-
-```shell
-% bundle exec rake spec_clean
-% bundle exec rake beaker
-```
-
-This will now download a pre-fabricated image configured in the [default node-set](./spec/acceptance/nodesets/default.yml),
-install Puppet, copy this module, and install its dependencies per [spec/spec_helper_acceptance.rb](./spec/spec_helper_acceptance.rb)
-and then run all the tests under [spec/acceptance](./spec/acceptance).
-
 ## Writing Tests
 
 ### Unit Tests
@@ -218,32 +201,6 @@ Sample test:
 it 'does a thing' do
   expect(subject).to contain_file("a test file").with({:path => "/etc/sample"})
 end
-```
-
-### Acceptance Tests
-
-Writing acceptance tests for Puppet involves [beaker][] and its cousin [beaker-rspec][]. A common pattern for acceptance tests is to create a test manifest, apply it
-twice to check for idempotency or errors, then run expectations.
-
-```ruby
-it 'does an end-to-end thing' do
-  pp = <<-EOF
-    file { 'a test file':
-      ensure  => present,
-      path    => "/etc/sample",
-      content => "test string",
-    }
-  EOF
-
-  apply_manifest(pp, :catch_failures => true)
-  apply_manifest(pp, :catch_changes => true)
-
-end
-
-describe file("/etc/sample") do
-  it { is_expected.to contain "test string" }
-end
-
 ```
 
 ### If you have commit access to the repository
@@ -271,7 +228,6 @@ The record of someone performing the merge is the record that they performed the
 4. Update ``CHANGELOG.md`` with the new version, and ensure a link exists for the diff from the last release.
 5. Commit those changes (``CHANGELOG.md`` and ``metadata.json``) and push. Wait for the TravisCI build to pass.
 6. Use ``bundle exec rake github_release`` to tag the version, push that tag, and create a GitHub Release.
-7. TravisCI will build the module and push to the forge, and build docs and push them to github pages.
 
 [rspec-puppet]: http://rspec-puppet.com/
 [rspec-puppet_docs]: http://rspec-puppet.com/documentation/
