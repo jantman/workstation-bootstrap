@@ -12,6 +12,7 @@
 - Convert ``puppet/config/hiera.yaml`` from version 3 to version 5
 - Add spec tests for nodes/hosts
 - Fix dependency version issues and unmet dependencies in Puppetfile and .fixtures.yml
+- Stop checking coverage; this doesn't work for node/host tests
 
 ## 1.1.0 Released 2017-07-09
 
