@@ -54,7 +54,7 @@ Distro-specific instructions follow.
 
 ### Arch Linux
 
-1. Do a default, base install of Arch (i.e. see instructions in the [Arch Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide), or my personal install notes in [phoenix_install.md](https://github.com/jantman/workstation-bootstrap/blob/master/phoenix_install.md) or [jackiepc_install.md](https://github.com/jantman/workstation-bootstrap/blob/master/jackiepc_install.md)).
+1. Do a default, base install of Arch (i.e. see instructions in the [Arch Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide), or my personal install notes in [phoenix_install.md](https://github.com/jantman/workstation-bootstrap/blob/master/phoenix_install.md), [jackiepc_install.md](https://github.com/jantman/workstation-bootstrap/blob/master/jackiepc_install.md), or [macbookpro11,4_install.md](https://github.com/jantman/workstation-bootstrap/blob/master/macbookpro11,4_install.md)).
 2. If you're on a HiDPI display like a MacBook Retina, you may want to increase the console font size, i.e. ``setfont sun12x22``
 2. Find your network interface name (``ip addr``) and get DHCP: ``systemctl start dhcpcd@<interface name>``, or get connectivity howerver else you want. You should now have an IP address, and networking should work (i.e. ``ping www.google.com``).
 3. If desired, ``pacman -S openssh && systemctl start sshd`` so you can work remotely.
