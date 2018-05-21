@@ -56,11 +56,11 @@ group :system_tests do
   gem "beaker-docker", '>= 0.3.0',                                               :require => false
   gem "puppet-module-posix-system-r#{minor_version}",                            :require => false, :platforms => "ruby"
   gem "puppet-module-win-system-r#{minor_version}",                              :require => false, :platforms => ["mswin", "mingw", "x64_mingw"]
-  gem "beaker", *location_for(ENV['BEAKER_VERSION'] || '>= 3')                  
+  gem "beaker", *location_for(ENV['BEAKER_VERSION'] || '>= 3')
   gem "beaker-pe",                                                               :require => false
-  gem "beaker-rspec", *location_for(ENV['BEAKER_RSPEC_VERSION'])                
+  gem "beaker-rspec", *location_for(ENV['BEAKER_RSPEC_VERSION'])
   gem "beaker-hostgenerator", *location_for(ENV['BEAKER_HOSTGENERATOR_VERSION'])
-  gem "beaker-abs", *location_for(ENV['BEAKER_ABS_VERSION'] || '~> 0.1')        
+  gem "beaker-abs", *location_for(ENV['BEAKER_ABS_VERSION'] || '~> 0.1')
   gem "puppet-blacksmith", '>= 4.1.1',                                           :require => false
   gem "vandamme",                                                                :require => false
   gem "octokit", '~> 4.0',                                                       :require => false
@@ -74,6 +74,8 @@ gem 'puppet', *location_for(ENV['PUPPET_GEM_VERSION'])
 # to `1` and then run bundle install.
 gem 'facter', *location_for(ENV['FACTER_GEM_VERSION']) if ENV['FACTER_GEM_VERSION']
 gem 'hiera', *location_for(ENV['HIERA_GEM_VERSION']) if ENV['HIERA_GEM_VERSION']
+
+gem 'r10k'
 
 # Evaluate Gemfile.local if it exists
 if File.exists? "#{__FILE__}.local"
