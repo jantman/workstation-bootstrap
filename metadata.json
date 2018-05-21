@@ -1,9 +1,9 @@
 {
   "name": "jantman-workstation_bootstrap",
-  "version": "2.0.0",
-  "summary": "sample control repository and main module, geared towards Arch Linux",
+  "version": "3.0.0",
+  "summary": "sample main repository and module, geared towards Arch Linux",
   "author": "jantman",
-  "description": "This is an example of a puppet/r10k control repository for use with my archlinux_workstation and optionally archlinux_macbookretina Puppet modules. This specific repository includes some personal configuration of mine, and is intended to be forked and modified as described below. This is intended to be a generic framework for anyone who wants to use Puppet to manage their workstation's configuration. The project provides some sane (though opinionated) defaults, and instructions for how to change them. The defaults are geared towards Arch Linux, but the core in this repository can be used for any distribution, or just as an example/starting point.",
+  "description": "This is an example of a puppet/r10k main repository for use with my archlinux_workstation and optionally archlinux_macbookretina Puppet modules. This specific repository includes some personal configuration of mine, and is intended to be forked and modified. This is intended to be a generic framework for anyone who wants to use Puppet to manage their workstation's configuration. The project provides some sane (though opinionated) defaults, and instructions for how to change them. The defaults are geared towards Arch Linux, but the core in this repository can be used for any distribution, or just as an example/starting point.",
   "dependencies": [
   ],
   "operatingsystem_support": [

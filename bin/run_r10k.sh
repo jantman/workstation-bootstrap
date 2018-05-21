@@ -1,7 +1,9 @@
 #!/bin/bash
 
+CLONEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 set -x
-pushd /etc/puppetlabs/code/workstation-bootstrap/puppet/
+cd $CLONEDIR
 git fetch && git pull
-popd
-PUPPETFILE=/etc/puppetlabs/code/workstation-bootstrap/puppet/Puppetfile PUPPETFILE_DIR=/etc/puppetlabs/code/workstation-bootstrap/puppet/modules /usr/bin/r10k puppetfile install $@
+PUPPETFILE=${CLONEDIR}/Puppetfile \
+  PUPPETFILE_DIR=${CLONEDIR}/modules/r10k \
+  /usr/bin/r10k puppetfile install -v $@

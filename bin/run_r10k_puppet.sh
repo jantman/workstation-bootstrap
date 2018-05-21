@@ -1,4 +1,6 @@
 #!/bin/bash
 
+CLONEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 set -x
-/etc/puppetlabs/code/workstation-bootstrap/bin/run_r10k.sh && /etc/puppetlabs/code/workstation-bootstrap/bin/run_puppet.sh $@
+cd $CLONEDIR
+./bin/run_r10k.sh && ./bin/run_puppet.sh $@
