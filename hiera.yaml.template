@@ -11,4 +11,4 @@ hierarchy:
     path: "user_config.yaml"
 defaults:
   data_hash: yaml_data
-  datadir: /etc/puppetlabs/code/workstation-bootstrap/puppet/hiera
+  datadir: %%CLONEDIR%%/hiera

@@ -4,33 +4,38 @@
 
 #### Table of Contents
 
-1. [Overview](#overview)
+1. [Important Notice About Version 3.0.0](#important-notice-about-version-300)
+2. [Overview](#overview)
     * [Warning](#warning)
-2. [Prerequisites](#prerequisites)
+3. [Prerequisites](#prerequisites)
     * [General](#general)
 	* [Arch Linux](#arch-linux)
-3. [Customization](#customization)
+4. [Customization](#customization)
     * [Hiera Data](#hiera-data)
     * [Sensitive Information](#sensitive-information)
-4. [Setup](#setup)
-5. [Usage](#usage)
-6. [Reference](#reference)
+5. [Setup](#setup)
+6. [Usage](#usage)
+7. [Reference](#reference)
     * [site.pp manifests](#site.pp-manifest)
     * [Puppetfile](#puppetfile)
     * [workstation_bootstrap module](#workstation_bootstrap-module)
     * [Hiera](#hiera)
     * [Hiera Ordering](#hiera-ordering)
-7. [Testing](#testing)
+8. [Testing](#testing)
+
+## Important Notice About Version 3.0.0
+
+Versions 2.0.0 and earlier of this repository were a full [control repository](https://puppet.com/docs/pe/latest/code_management/control_repo.html) setup for environments and intended to be checked out into the distribution default Puppet config directories (i.e. ``/etc/puppet/code``). I've found this to be cumbersome, unusual, and difficult to maintain. As a result, Version 3.0.0 changes this repository to run directly from the git clone in the way that masterless Puppet provisioners are typically used. Hopefully this will make it easier for others to use as an example.
 
 ## Overview
 
-This is an example of a puppet/[r10k](https://github.com/puppetlabs/r10k) [control repository](https://puppet.com/docs/pe/latest/code_management/control_repo.html) for use with my [archlinux_workstation](https://forge.puppet.com/jantman/archlinux_workstation) and optionally [archlinux_macbookretina](https://forge.puppet.com/jantman/archlinux_macbookretina) Puppet modules. This specific repository includes some personal configuration of mine, and is intended to be forked and modified as described below. This is intended to be a generic framework for anyone who wants to use Puppet to manage their workstation's configuration. The project provides some sane (though opinionated) defaults, and instructions for how to change them. The defaults are geared towards Arch Linux, but the core in this repository can be used for any distribution, or just as an example/starting point.
+This is an example of a puppet / [r10k](https://github.com/puppetlabs/r10k) masterless repository for use with my [archlinux_workstation](https://forge.puppet.com/jantman/archlinux_workstation) and optionally [archlinux_macbookretina](https://forge.puppet.com/jantman/archlinux_macbookretina) Puppet modules. This specific repository includes some personal configuration of mine, and is intended to be forked and modified as described below. This is intended to be a generic framework for anyone who wants to use Puppet to manage their workstation's configuration. The project provides some sane (though opinionated) defaults, and instructions for how to change them. The defaults are geared towards Arch Linux, but the core in this repository can be used for any distribution, or just as an example/starting point.
 
 In general, what this repository has is:
 
 * a [Puppetfile](#puppetfile) for use with r10k, to install all dependencies.
 * a [site.pp main manifest](#site.pp-manifest), which sets up the top-scope things needed for [puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall)) and uses your [hiera data](#hiera) to include the classes you want to use.
-* Some helper scripts under ``bin/`` to aid in installation and use. See [Setup](#setup) and [Usage](#usage).
+* Some helper scripts under ``bin/`` to aid in use. See [Setup](#setup) and [Usage](#usage).
 * Documentation on initial setup of an Arch computer to use with this repo.
 
 ### Warning
@@ -68,9 +73,9 @@ Distro-specific instructions follow.
 Here's how to make this project do what you want:
 
 1. Fork this repository.
-2. Edit ``puppet/Puppetfile`` to contain all of the modules that you need as well as their dependencies. Unlike ``puppet module install``, r10k does not have dependency resolution.
-3. Edit the files under ``puppet/hiera/`` to do what you need. See below for more information.
-4. Edit ``puppet/manifests/site.pp`` as needed, though the default should be acceptable for most people.
+2. Edit ``Puppetfile`` to contain all of the modules that you need as well as their dependencies. Unlike ``puppet module install``, r10k does not have dependency resolution.
+3. Edit the files under ``hiera/`` to do what you need. See below for more information.
+4. Edit ``manifests/site.pp`` as needed, though the default should be acceptable for most people.
 5. Edit the spec tests under ``spec/hosts`` to match your changes in the previous steps.
 6. Commit and push your changes.
 
@@ -104,22 +109,21 @@ Most users will have some sensitive information that they want on their machine 
 
 To set up the project on one of your own machines:
 
-1. ``cd /etc/puppetlabs/code``
-2. ``git clone https://github.com/jantman/workstation-bootstrap.git workstation-bootstrap`` (or your fork, if you made one)
-3. ``cd workstation-bootstrap``
-4. ``./bin/setup.sh``
-5. Deploy the modules with r10k and then run Puppet: ``./bin/run_r10k_puppet.sh``. Assuming you're running under Arch Linux and using my [archlinux_workstation](https://github.com/jantman/puppet-archlinux-workstation) module, you'll want to do this either in a screen session or redirect the output to a file; at some point in the run, Xorg and SDDM will start up and your display will turn graphical. You can either login or use ``Ctrl + Alt + F2`` to get to a text console. If puppet dies when the ``sddm`` service starts, just re-run it.
-6. After the initial run, set the password for your newly-created user and then reboot.
-7. Log in as your user.
+1. ``git clone https://github.com/jantman/workstation-bootstrap.git`` (or your fork, if you made one) somewhere convenient; I use ``/root`` for ease.
+2. ``cd workstation-bootstrap``
+3. To deploy the dependencies with r10k and then run Puppet: ``./bin/run_r10k_puppet.sh``. Assuming you're running under Arch Linux and using my [archlinux_workstation](https://github.com/jantman/puppet-archlinux-workstation) module, you'll want to do this either in a screen session or redirect the output to a file; at some point in the run, Xorg and SDDM will start up and your display will turn graphical. You can either login or use ``Ctrl + Alt + F2`` to get to a text console. If puppet dies when the ``sddm`` service starts, just re-run it.
+4. After the initial run, set the password for your newly-created user and then reboot.
+5. Log in as your user.
 
 ## Usage
 
 * To run the r10k deploy, ``./bin/run_r10k.sh``
 * To run puppet on ``site.pp``, ``./bin/run_puppet.sh``
 * To run r10k and then puppet, ``./bin/run_r10k_puppet.sh``
-* To find the value of a given key in the current Hiera data, ``./bin/hiera_show_value.sh KEY_NAME``
 
 ``./bin/run_puppet.sh`` and ``./bin/run_r10k_puppet.sh`` will add any command-line arguments that you specify to the ``puppet`` command before the path to ``site.pp`` (i.e. ``./bin/run_r10k_puppet.sh --noop`` will end run ``puppet`` with ``--noop``).
+
+I generally create symlinks in ``~/bin`` to these scripts for ease.
 
 ## Firewall Rules and Docker
 
@@ -160,27 +164,18 @@ At this moment, what this code does is:
 
 ### workstation_bootstrap module
 
-This module has two classes, ``workstation_bootstrap::firewall_pre`` and ``workstation_bootstrap::firewall_post``, which
+The base ``workstation_bootstrap`` module can be found in ``modules/local/workstation_bootstrap``. It has two classes, ``workstation_bootstrap::firewall_pre`` and ``workstation_bootstrap::firewall_post``, which
 do setup of default Firewall module rules, including accepting SSH on port 22.
 
 ### Puppetfile
 
-* [archlinux_workstation](https://forge.puppet.com/jantman/archlinux_workstation)
-* [archlinux_macbookretina](https://forge.puppet.com/jantman/archlinux_macbookretina)
-* [puppetlabs/stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib)
-* [saz/sudo](https://forge.puppetlabs.com/saz/sudo) (dependency of archlinux_workstation)
-* [saz/ssh](https://forge.puppetlabs.com/saz/ssh) (dependency of archlinux_workstation)
-* [puppetlabs/firewall](https://forge.puppetlabs.com/puppetlabs/firewall)
-* [puppetlabs/inifile](https://forge.puppetlabs.com/puppetlabs/inifile)
-* [puppetlabs/vcsrepo](https://forge.puppetlabs.com/puppetlabs/vcsrepo)
-* [eirc/single_user_rvm](https://forge.puppetlabs.com/eirc/single_user_rvm)
-* [nanliu/staging](https://forge.puppetlabs.com/nanliu/staging)
+See [Puppetfile](Puppetfile) itself for the current list of included dependencies.
 
 By default, the Puppetfile also includes my personal "privatepuppet" module. You should comment this out or replace it with your own personal module(s).
 
 ### Hiera
 
-The Hiera hierarchy used is as follows:
+The Hiera hierarchy used is rooted at ``hiera/`` and has configurations as follows:
 
 * ``defaults.yaml`` - default configuration and classes
 * ``osfamily/Archlinux.yaml`` - include ``archlinux-workstation`` class on Arch Linux

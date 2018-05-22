@@ -1,3 +1,7 @@
+## [3.0.0] Released 2018-05-21
+
+- Completely rework from previous system-wide installation to be run directly from git clone
+
 ## [2.0.0] Released 2018-02-04
 
 - Update all dependencies and layout via modulesync, to modern Puppet5 version.
