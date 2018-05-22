@@ -41,5 +41,5 @@ fixtures:
       repo: "https://github.com/puppetlabs/puppetlabs-apt.git"
       ref: "2.3.0"
   symlinks:
-    workstation_bootstrap: "#{source_dir}/puppet/modules/workstation_bootstrap"
+    workstation_bootstrap: "#{source_dir}/modules/local/workstation_bootstrap"
     privatepuppet: "#{source_dir}/spec/fixtures/privatepuppet"

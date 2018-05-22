@@ -5,12 +5,15 @@ require 'puppet-strings' if Bundler.rubygems.find_name('puppet-strings').any?
 require 'vandamme' if Bundler.rubygems.find_name('vandamme').any?
 require 'octokit' if Bundler.rubygems.find_name('octokit').any?
 require 'json'
+require 'fileutils'
 
 PuppetLint.configuration.fail_on_warnings = true
 PuppetLint.configuration.send('relative')
+PuppetLint.configuration.pattern = 'modules/local/**/*.pp'
 
 desc "NON-PARALLEL version of release_checks"
 task :release_checks_nonparallel do
+  FileUtils.rm_rf('modules/r10k') if Dir.exist?('modules/r10k')
   Rake::Task[:lint].invoke
   Rake::Task[:validate].invoke
   Rake::Task[:spec].invoke

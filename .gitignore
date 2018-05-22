@@ -20,5 +20,5 @@ spec/fixtures/modules/
 spec/fixtures/hiera.yaml
 tmp/
 vendor/
-hiera.yaml
+/hiera.yaml
 modules/r10k
