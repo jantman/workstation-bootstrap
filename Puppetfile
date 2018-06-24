@@ -23,7 +23,7 @@ mod 'archlinux_macbookretina',
   :git => 'https://github.com/jantman/puppet-archlinux-macbookretina.git'
 
 ### module dependencies ###
-mod 'puppetlabs/stdlib', '4.9.0'
+mod 'puppetlabs/stdlib', '4.10.0'
 mod 'saz/sudo', '4.2.0' # dependency of jantman/archlinux_workstation
 mod 'saz/ssh', '3.0.1' # dependency of jantman/archlinux_macbookretina
 mod 'puppetlabs/concat', '2.2.1' # dependency of saz/ssh
