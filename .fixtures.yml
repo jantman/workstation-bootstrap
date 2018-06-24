@@ -6,7 +6,7 @@ fixtures:
       repo: "https://github.com/jantman/puppet-archlinux-macbookretina.git"
     stdlib:
       repo: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
-      ref: "4.9.0"
+      ref: "4.10.0"
     sudo:
       repo: "https://github.com/saz/puppet-sudo.git"
       ref: "v4.2.0"
