@@ -1,3 +1,7 @@
+## [3.1.0] Released 2019-01-15
+
+- Update ``bin/run_r10k.sh`` wrapper script for [r10k 3.0.0](https://github.com/puppetlabs/r10k/blob/master/CHANGELOG.mkd#300) compatibility and to force r10k to overwrite locally-changed files.
+
 ## [3.0.0] Released 2018-05-21
 
 - Completely rework from previous system-wide installation to be run directly from git clone
@@ -32,5 +36,7 @@
 - initial module creation
 - migration of a bunch of stuff from https://github.com/jantman/puppet-archlinux-macbookretina
 
+[3.1.0]: https://github.com/jantman/workstation-bootstrap/compare/3.0.0...3.1.0
+[3.0.0]: https://github.com/jantman/workstation-bootstrap/compare/2.0.0...3.0.0
 [2.0.0]: https://github.com/jantman/workstation-bootstrap/compare/1.1.0...2.0.0
 [1.1.0]: https://github.com/jantman/workstation-bootstrap/compare/1.0.0...1.1.0
