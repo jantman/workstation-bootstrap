@@ -2,6 +2,14 @@
 
 This is the process I used for installing Arch Linux on my work-issued Dell Precision 5530 laptop.
 
+## Installation Notes
+
+It took me some trial-and-error to get everything right, mainly around initially getting a black screen (but obviously recognizing key input and Ctrl + Alt + Delete) after decrypting the drive. I [tried](https://github.com/jantman/workstation-bootstrap/commit/519a7f643c0b105791a7c08a0e497341153cee72) a fix from [a forum post](https://forum.antergos.com/topic/11077/blank-screen-after-log-in-nvidia-issue/2) of adding ``MODULES=(intel_agp i915)`` in ``/etc/mkinitcpio.conf`` but that actually resulted in the black screen _before_ the LUKS prompt. However, it at least confirmed that this was a video issue. Booting back to the Arch installer, ``lsmod`` showed me that it had i915, intel_gtt and nouveau loaded and ``lspci -k`` showed that the Dell onboard graphics was using i915 but the Nvidia chip was using nouveau.
+
+Adding ``nomodeset`` to the kernel command line allowed me to get a normal, happy console login prompt.
+
+At this point I started researching options for how to handle the graphics, i.e. [NVIDIA Optimus](https://wiki.archlinux.org/index.php/NVIDIA_Optimus#Using_nouveau). Unfortunately the BIOS doesn't seem to have an option for disabling either onboard graphics or the discrete GPU, so the simple option was out. I decided to try using [Nouveau](https://wiki.archlinux.org/index.php/Nouveau) and [PRIME](https://wiki.archlinux.org/index.php/PRIME), which you can see in Step 19, below.
+
 ## Initial Installation
 
 1. Plug in power, wired Ethernet (via USB-C adapter). DO NOT PLUG IN Arch installation USB stick.
@@ -58,7 +66,7 @@ This is the process I used for installing Arch Linux on my work-issued Dell Prec
     4. Edit ``/etc/locale.gen`` as needed, run ``locale-gen``, and create ``/etc/locale.conf``
     5. Create ``/etc/hostname`` and set ``/etc/hosts`` entries accordingly.
     6. Install intel microcode: ``pacman -S intel-ucode``
-12. [Configure mkinitcpio per the dm-crypt instructions](https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#Configuring_mkinitcpio_2): edit the ``HOOKS`` line to match what's given in those instructions (order matters A LOT). Also ensure that after ``lvm2`` you add ``resume``. If you're using ``en_US.UTF-8`` you can leave out ``keymap`` and ``consolefont``. The final line should read: ``HOOKS=(base udev autodetect keyboard modconf block encrypt lvm2 resume filesystems keyboard fsck)``. For the Precision 5530 laptop, also set ``MODULES=(intel_agp i915)`` per [this forum post](https://forum.antergos.com/topic/11077/blank-screen-after-log-in-nvidia-issue/2). Save the file and then run ``mkinitcpio -p linux``.
+12. [Configure mkinitcpio per the dm-crypt instructions](https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#Configuring_mkinitcpio_2): edit the ``HOOKS`` line to match what's given in those instructions (order matters A LOT). Also ensure that after ``lvm2`` you add ``resume``. If you're using ``en_US.UTF-8`` you can leave out ``keymap`` and ``consolefont``. The final line should read: ``HOOKS=(base udev autodetect keyboard modconf block encrypt lvm2 resume filesystems keyboard fsck)``. For the Precision 5530 laptop, also set ``MODULES=(intel_agp i915)``. Save the file and then run ``mkinitcpio -p linux``.
 13. Run ``passwd`` to create the root password.
 14. Install the GRUB bootloader:
     1. ``pacman -S grub efibootmgr``
@@ -68,7 +76,8 @@ This is the process I used for installing Arch Linux on my work-issued Dell Prec
        * In the kernel parameters, set ``resume=/dev/LUKSvol/swap``
        * In the kernel parameters, set ``cryptdevice=UUID=device-UUID:cryptlvm root=/dev/LUKSvol/root`` (replacing ``device-UUID`` with the UUID of the device, i.e. the ``/dev/disk/by-uuid`` symlink that points to ``/dev/nvme0n1p3``)
        * If you're like me, you'll want to remove the default ``quiet``
-       * The final line should read: ``GRUB_CMDLINE_LINUX_DEFAULT="resume=/dev/LUKSvol/swap cryptdevice=UUID=d6982ada-e991-4682-8966-ddb87c1d4882:cryptlvm root=/dev/LUKSvol/root"``
+       * To work around some video issues, add ``nomodeset``.
+       * The final line should read: ``GRUB_CMDLINE_LINUX_DEFAULT="resume=/dev/LUKSvol/swap cryptdevice=UUID=d6982ada-e991-4682-8966-ddb87c1d4882:cryptlvm root=/dev/LUKSvol/root nomodeset"``
     5. Run ``grub-mkconfig -o /boot/grub/grub.cfg`` to generate the new GRUB configuration
 15. The installation should be complete. ``exit`` then ``umount -R /mnt`` and ``reboot``.
 16. Press F12 at the Dell splash screen.
@@ -82,4 +91,5 @@ This is the process I used for installing Arch Linux on my work-issued Dell Prec
       * Click the "GRUB" entry in the boxes at the top right, and move it to be the first option (using the arrow buttons).
 17. "Apply" then "Exit". System will reboot.
 18. If all went well, you should get a GRUB menu and then the beginning of Arch boot. You'll be prompted for the LUKS passphrase; enter it and you should boot into Arch.
-19. Continue on with the Puppetized installation process per [Arch Linux in README.md](https://github.com/jantman/workstation-bootstrap/blob/master/README.md#arch-linux).
+19. For Precision 5530 graphics using [Nouveau](https://wiki.archlinux.org/index.php/Nouveau) and [PRIME](https://wiki.archlinux.org/index.php/PRIME): ``pacman -S xf86-video-nouveau xf86-video-intel xorg-xrandr`` and then ensure that ``nomodeset`` is **not** in your ``/etc/default/grub`` (if it is, remove it and re-run ``grub-mkconfig -o /boot/grub/grub.cfg``). Reboot.
+20. Continue on with the Puppetized installation process per [Arch Linux in README.md](https://github.com/jantman/workstation-bootstrap/blob/master/README.md#arch-linux).
