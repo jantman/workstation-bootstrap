@@ -58,7 +58,7 @@ This is the process I used for installing Arch Linux on my work-issued Dell Prec
     4. Edit ``/etc/locale.gen`` as needed, run ``locale-gen``, and create ``/etc/locale.conf``
     5. Create ``/etc/hostname`` and set ``/etc/hosts`` entries accordingly.
     6. Install intel microcode: ``pacman -S intel-ucode``
-12. [Configure mkinitcpio per the dm-crypt instructions](https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#Configuring_mkinitcpio_2): edit the ``HOOKS`` line to match what's given in those instructions (order matters A LOT). Also ensure that after ``lvm2`` you add ``resume``. If you're using ``en_US.UTF-8`` you can leave out ``keymap`` and ``consolefont``. Save the file and then run ``mkinitcpio -p linux``.
+12. [Configure mkinitcpio per the dm-crypt instructions](https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#Configuring_mkinitcpio_2): edit the ``HOOKS`` line to match what's given in those instructions (order matters A LOT). Also ensure that after ``lvm2`` you add ``resume``. If you're using ``en_US.UTF-8`` you can leave out ``keymap`` and ``consolefont``. The final line should read: ``HOOKS=(base udev autodetect keyboard modconf block encrypt lvm2 resume filesystems keyboard fsck)``. For the Precision 5530 laptop, also set ``MODULES=(intel_agp i915)`` per [this forum post](https://forum.antergos.com/topic/11077/blank-screen-after-log-in-nvidia-issue/2). Save the file and then run ``mkinitcpio -p linux``.
 13. Run ``passwd`` to create the root password.
 14. Install the GRUB bootloader:
     1. ``pacman -S grub efibootmgr``
@@ -67,6 +67,8 @@ This is the process I used for installing Arch Linux on my work-issued Dell Prec
     4. Edit ``/etc/default/grub``
        * In the kernel parameters, set ``resume=/dev/LUKSvol/swap``
        * In the kernel parameters, set ``cryptdevice=UUID=device-UUID:cryptlvm root=/dev/LUKSvol/root`` (replacing ``device-UUID`` with the UUID of the device, i.e. the ``/dev/disk/by-uuid`` symlink that points to ``/dev/nvme0n1p3``)
+       * If you're like me, you'll want to remove the default ``quiet``
+       * The final line should read: ``GRUB_CMDLINE_LINUX_DEFAULT="resume=/dev/LUKSvol/swap cryptdevice=UUID=d6982ada-e991-4682-8966-ddb87c1d4882:cryptlvm root=/dev/LUKSvol/root"``
     5. Run ``grub-mkconfig -o /boot/grub/grub.cfg`` to generate the new GRUB configuration
 15. The installation should be complete. ``exit`` then ``umount -R /mnt`` and ``reboot``.
 16. Press F12 at the Dell splash screen.
