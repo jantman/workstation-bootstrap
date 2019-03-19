@@ -8,7 +8,9 @@ It took me some trial-and-error to get everything right, mainly around initially
 
 Adding ``nomodeset`` to the kernel command line allowed me to get a normal, happy console login prompt.
 
-At this point I started researching options for how to handle the graphics, i.e. [NVIDIA Optimus](https://wiki.archlinux.org/index.php/NVIDIA_Optimus#Using_nouveau). Unfortunately the BIOS doesn't seem to have an option for disabling either onboard graphics or the discrete GPU, so the simple option was out. I decided to try using [Nouveau](https://wiki.archlinux.org/index.php/Nouveau) and [PRIME](https://wiki.archlinux.org/index.php/PRIME), which you can see in Step 19, below.
+At this point I started researching options for how to handle the graphics, i.e. [NVIDIA Optimus](https://wiki.archlinux.org/index.php/NVIDIA_Optimus#Using_nouveau). Unfortunately the BIOS doesn't seem to have an option for disabling either onboard graphics or the discrete GPU, so the simple option was out. I decided to try using [Nouveau](https://wiki.archlinux.org/index.php/Nouveau) and [PRIME](https://wiki.archlinux.org/index.php/PRIME) via ``pacman -S xf86-video-nouveau xf86-video-intel xorg-xrandr`` and removing ``nomodeset`` from the kernel command line. That gave me a back display after decrypt again. Booting that way _with_ nomodeset got me the console login.
+
+At this point I decided to take a break, and pick up the next day with getting the Puppetized process moving, and then circle back to graphics when the rest of the system was working.
 
 ## Initial Installation
 
