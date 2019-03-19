@@ -18,3 +18,5 @@ archlinux_workstation::user_groups:
   - bumblebee
 classes:
   - privatepuppet
+exclude_classes:
+  - archlinux_workstation::all
