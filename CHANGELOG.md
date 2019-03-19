@@ -1,3 +1,8 @@
+## Unreleased Changes
+
+- Remove my [archlinux-macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina) module, as it is now abandoned.
+- Other minor updates
+
 ## [3.1.0] Released 2019-01-15
 
 - Update ``bin/run_r10k.sh`` wrapper script for [r10k 3.0.0](https://github.com/puppetlabs/r10k/blob/master/CHANGELOG.mkd#300) compatibility and to force r10k to overwrite locally-changed files.

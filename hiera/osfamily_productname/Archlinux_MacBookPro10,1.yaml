@@ -1,8 +1,0 @@
-##########################################################################
-# github.com/jantman/workstation-bootstrap - Arch Linux - MacBook Retina #
-#                                                                        #
-# If needed, these should be overridden in user_config.yaml              #
-##########################################################################
-
-classes:
-  - archlinux_macbookretina

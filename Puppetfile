@@ -19,9 +19,6 @@ mod 'workstation_bootstrap', :local => true
 mod 'archlinux_workstation',
   :git => 'https://github.com/jantman/puppet-archlinux-workstation.git'
 
-mod 'archlinux_macbookretina',
-  :git => 'https://github.com/jantman/puppet-archlinux-macbookretina.git'
-
 ### module dependencies ###
 mod 'puppetlabs/stdlib', '4.10.0'
 mod 'saz/sudo', '4.2.0' # dependency of jantman/archlinux_workstation
