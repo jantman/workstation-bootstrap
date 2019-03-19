@@ -65,7 +65,7 @@ Distro-specific instructions follow.
 3. If desired, ``pacman -S openssh && systemctl start sshd`` so you can work remotely.
 4. Make sure everything is up to date: ``pacman -Syu``
 5. Install Puppet and some packages required to build ruby things: ``pacman -S base-devel puppet git lsb-release ruby``
-6. Install r10k. It's currently not in an official Arch package; to get the latest version, use ``gem install r10k``
+6. Install r10k. It's currently not in an official Arch package; to get the latest version, use ``gem install --no-user-install r10k``
 7. If you're going to be using private puppet module(s), setup SSH keys for the root user and add them to your GitHub account (either as keys for your user, or deploy keys on the repository).
 
 ## Customization
@@ -85,7 +85,7 @@ The [Reference](#reference) section below describes what this project provides b
 
 Aside from the list of modules you require in your Puppetfile, the rest of the configuration resides in Hiera data, including the list of classes to apply to each node. This makes it easier to separate the upstream code for this repository from your own configuration.
 
-In addition to the usual binding of values to keys (class parameters), the Hiera data also determines which classes to apply based on the values in the ``classes`` and ``exclude_classes`` arrays. These are utilized in ``site.pp``. The ``classes`` and ``exclude_classes`` arrays are pulled in using Array merging, meaning that rather than stopping at the first instance found in the hierarchy, Hiera/Puppet will merge all instances of the respective arrays from all data sources into one. The ``classes`` array determines the classes that will be applied to a node; any classes in ``exclude_classes`` will be removed from the final ``classes`` list before applying to the node.
+In addition to the usual binding of values to keys (class parameters), the Hiera data also determines which classes to apply based on the values in the ``classes`` and ``remove_classes`` arrays. These are utilized in ``site.pp``. The ``classes`` and ``remove_classes`` arrays are pulled in using Array merging, meaning that rather than stopping at the first instance found in the hierarchy, Hiera/Puppet will merge all instances of the respective arrays from all data sources into one. The ``classes`` array determines the classes that will be applied to a node; any classes in ``remove_classes`` will be removed from the final ``classes`` list before applying to the node.
 
 If you're OK with the defaults (such as my [archlinux_macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina) module on Arch Linux MacBooks and
 [archlinux_workstation](https://github.com/jantman/puppet-archlinux-workstation) on any Arch Linux machine), you should only need to update the values in ``user_config.yaml``.
@@ -93,7 +93,7 @@ If you're OK with the defaults (such as my [archlinux_macbookretina](https://git
 If you want to remove my ``archlinux_macbookretina`` module, for example, add the following to ``user_config.yaml``:
 
 ```
-exclude_classes:
+remove_classes:
   - archlinux_macbookretina
 ```
 
