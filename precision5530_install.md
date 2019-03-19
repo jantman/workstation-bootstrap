@@ -44,7 +44,7 @@ This is the process I used for installing Arch Linux on my work-issued Dell Prec
    7. Because I'm lazy and this is a laptop (don't hate me), use the rest of the disk for a single root partition: ``lvcreate -l 100%FREE LUKSvol -n root``
    8. Setup the filesystems: ``mkswap /dev/LUKSvol/swap && mkfs.ext4 /dev/LUKSvol/root``
    9. Mount the partitions: ``mount /dev/LUKSvol/root /mnt; swapon /dev/LUKSvol/swap``
-   10. Create the ESP filesystem on the ESP partition: ``mkfs.fat -F32 /dev/nvme0n1p1`` (if that isn't installed, ``pacman -S dosfstools``) and mount it: ``mount /dev/nvme0n1p1 /mnt/efi``
+   10. Create the ESP filesystem on the ESP partition: ``mkfs.fat -F32 /dev/nvme0n1p1`` (if that isn't installed, ``pacman -S dosfstools``) and mount it: ``mkdir /mnt/efi && mount /dev/nvme0n1p1 /mnt/efi``
    11. Create the boot filesystem on the BOOT partition: ``mkfs.ext4 /dev/nvme0n1p2``
    12. Create the boot directory and mount the partition: ``mkdir /mnt/boot && mount /dev/nvme0n1p2 /mnt/boot``
    13. We're done with this for now, but we'll come back to finish it later.
@@ -68,3 +68,16 @@ This is the process I used for installing Arch Linux on my work-issued Dell Prec
        * In the kernel parameters, set ``resume=/dev/LUKSvol/swap``
        * In the kernel parameters, set ``cryptdevice=UUID=device-UUID:cryptlvm root=/dev/LUKSvol/root`` (replacing ``device-UUID`` with the UUID of the device, i.e. the ``/dev/disk/by-uuid`` symlink that points to ``/dev/nvme0n1p3``)
     5. Run ``grub-mkconfig -o /boot/grub/grub.cfg`` to generate the new GRUB configuration
+15. The installation should be complete. ``exit`` then ``umount -R /mnt`` and ``reboot``.
+16. Press F12 at the Dell splash screen.
+    * Other Options -> BIOS Setup
+      * Settings -> General -> Boot Sequence
+      * Click "Add Boot Option"
+        * Boot Option Name: "GRUB"
+        * Leave File System List as-is
+        * File Name: click "..." to browse, browse to ``\EFI\GRUB\grubx64.efi``
+        * OK
+      * Click the "GRUB" entry in the boxes at the top right, and move it to be the first option (using the arrow buttons).
+17. "Apply" then "Exit". System will reboot.
+18. If all went well, you should get a GRUB menu and then the beginning of Arch boot. You'll be prompted for the LUKS passphrase; enter it and you should boot into Arch.
+19. Continue on with the Puppetized installation process per [Arch Linux in README.md](https://github.com/jantman/workstation-bootstrap/blob/master/README.md#arch-linux).
