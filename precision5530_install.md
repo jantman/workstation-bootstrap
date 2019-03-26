@@ -9,13 +9,10 @@ This is the process I used for installing Arch Linux on my work-issued Dell Prec
 
 ## Installation Notes
 
-It took me some trial-and-error to get everything right, mainly around initially getting a black screen (but obviously recognizing key input and Ctrl + Alt + Delete) after decrypting the drive. I [tried](https://github.com/jantman/workstation-bootstrap/commit/519a7f643c0b105791a7c08a0e497341153cee72) a fix from [a forum post](https://forum.antergos.com/topic/11077/blank-screen-after-log-in-nvidia-issue/2) of adding ``MODULES=(intel_agp i915)`` in ``/etc/mkinitcpio.conf`` but that actually resulted in the black screen _before_ the LUKS prompt. However, it at least confirmed that this was a video issue. Booting back to the Arch installer, ``lsmod`` showed me that it had i915, intel_gtt and nouveau loaded and ``lspci -k`` showed that the Dell onboard graphics was using i915 but the Nvidia chip was using nouveau.
+It took me some trial-and-error to get everything right, mainly around initially getting a black screen (but obviously recognizing key input and Ctrl + Alt + Delete) after decrypting the drive. After _much_ (as in five days) of trial and error, I came up with the following:
 
-Adding ``nomodeset`` to the kernel command line allowed me to get a normal, happy console login prompt.
-
-At this point I started researching options for how to handle the graphics, i.e. [NVIDIA Optimus](https://wiki.archlinux.org/index.php/NVIDIA_Optimus#Using_nouveau). Unfortunately the BIOS doesn't seem to have an option for disabling either onboard graphics or the discrete GPU, so the simple option was out. I decided to try using [Nouveau](https://wiki.archlinux.org/index.php/Nouveau) and [PRIME](https://wiki.archlinux.org/index.php/PRIME) via ``pacman -S xf86-video-nouveau xf86-video-intel xorg-xrandr`` and removing ``nomodeset`` from the kernel command line. That gave me a back display after decrypt again. Booting that way _with_ nomodeset got me the console login.
-
-At this point I decided to take a break, and pick up the next day with getting the Puppetized process moving, and then circle back to graphics when the rest of the system was working.
+1. Perform the initial installation with an external monitor connected. This should work fine.
+2. Once everything else is ready, until [this kernel bug](https://bugs.freedesktop.org/show_bug.cgi?id=109959) is fixed, run a patched kernel to make the laptop display work (see last step, below).
 
 ## Initial Installation
 
