@@ -2,6 +2,11 @@
 
 This is the process I used for installing Arch Linux on my work-issued Dell Precision 5530 laptop.
 
+## References
+
+* [Dell XPS 15 - ArchWiki](https://wiki.archlinux.org/index.php/Dell_XPS_15)
+* [Laptop/Dell - ArchWiki](https://wiki.archlinux.org/index.php/Laptop/Dell#Precision)
+
 ## Installation Notes
 
 It took me some trial-and-error to get everything right, mainly around initially getting a black screen (but obviously recognizing key input and Ctrl + Alt + Delete) after decrypting the drive. I [tried](https://github.com/jantman/workstation-bootstrap/commit/519a7f643c0b105791a7c08a0e497341153cee72) a fix from [a forum post](https://forum.antergos.com/topic/11077/blank-screen-after-log-in-nvidia-issue/2) of adding ``MODULES=(intel_agp i915)`` in ``/etc/mkinitcpio.conf`` but that actually resulted in the black screen _before_ the LUKS prompt. However, it at least confirmed that this was a video issue. Booting back to the Arch installer, ``lsmod`` showed me that it had i915, intel_gtt and nouveau loaded and ``lspci -k`` showed that the Dell onboard graphics was using i915 but the Nvidia chip was using nouveau.
@@ -14,7 +19,7 @@ At this point I decided to take a break, and pick up the next day with getting t
 
 ## Initial Installation
 
-1. Plug in power, wired Ethernet (via USB-C adapter). DO NOT PLUG IN Arch installation USB stick.
+1. Plug in power, wired Ethernet (via USB-C adapter). DO NOT PLUG IN Arch installation USB stick. Attach an external monitor (see last step for details).
 2. Power on the system. At the Dell splash screen, hold down the F12 key until you get to the one-time boot menu.
    * Other Options -> Change Boot Mode Settings
      * Change boot mode to: 2) UEFI Boot Mode, Secure Boot OFF. Proceed and apply the changes.
@@ -93,5 +98,14 @@ At this point I decided to take a break, and pick up the next day with getting t
       * Click the "GRUB" entry in the boxes at the top right, and move it to be the first option (using the arrow buttons).
 17. "Apply" then "Exit". System will reboot.
 18. If all went well, you should get a GRUB menu and then the beginning of Arch boot. You'll be prompted for the LUKS passphrase; enter it and you should boot into Arch.
-19. For Precision 5530 graphics using [Nouveau](https://wiki.archlinux.org/index.php/Nouveau) and [PRIME](https://wiki.archlinux.org/index.php/PRIME): ``pacman -S xf86-video-nouveau xf86-video-intel xorg-xrandr`` and then ensure that ``nomodeset`` is **not** in your ``/etc/default/grub`` (if it is, remove it and re-run ``grub-mkconfig -o /boot/grub/grub.cfg``). Reboot.
-20. Continue on with the Puppetized installation process per [Arch Linux in README.md](https://github.com/jantman/workstation-bootstrap/blob/master/README.md#arch-linux).
+    * If you have video issues, like me, and the screen goes black before or after entering your LUKS passphrase, reboot. At the GRUB prompt press "e" and append ``nomodeset`` to the ``linux`` line. This will work as a temporary fix until video is set up properly.
+19. Connect to your network and get DHCP (``systemctl start dhcpcd@INTERFACE-NAME``).
+20. Continue on with the Puppetized installation process per [Arch Linux in README.md](https://github.com/jantman/workstation-bootstrap/blob/master/README.md#arch-linux):
+    1. Do a full update: ``pacman -Syu``
+    2. ``pacman -S base-devel puppet git lsb-release ruby`` - when prompted, install the whole base-devel group
+    3. ``gem install --no-user-install r10k``
+    4. If you're using a private GitHub repo for customization, generate SSH keys for root and add them as deploy keys on the repo.
+    5. As root, in ``/root``: ``git clone https://github.com/jantman/workstation-bootstrap.git && cd workstation-bootstrap``
+    6. ``./bin/run_r10k_puppet.sh | tee /root/puppet.$(date +%s)`` - run puppet and capture the output.
+21. Install some packages for the graphics: ``pacman -S linux-headers xf86-video-intel nvidia-dkms nvidia-settings xorg-xrandr tlp``
+22. Until [freedesktop.org bug 109959 – REGRESSION: black screen with linux 5.0 when starting X](https://bugs.freedesktop.org/show_bug.cgi?id=109959) is fixed and released, 5.x kernels will fail to detect the laptop screen (eDP). To fix this, apply the kernel patch listed in that bug or install ``linux-precision5530-headers`` and ``linux-precision5530`` from [my Arch repo](http://archrepo.jasonantman.com/current/index.html) ([source repo](https://github.com/jantman/arch-pkgbuilds/tree/master/linux-precision5530)). Once this bug is fixed in the Arch kernel, you can switch back to that and also switch from ``nvidia-dkms`` to ``nvidia`` (the DKMS driver is required for the custom kernel).
