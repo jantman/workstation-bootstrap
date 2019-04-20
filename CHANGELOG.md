@@ -1,7 +1,8 @@
-## Unreleased Changes
+## [3.2.0 Released 2019-04-20]
 
 - Remove my [archlinux-macbookretina](https://github.com/jantman/puppet-archlinux-macbookretina) module, as it is now abandoned.
 - Other minor updates
+- Switch Puppetfile from using garethr/docker to my fork of it. garethr/docker generates systemd unit files that fail to parse correctly with systemd >= 241 if no ``command`` is specified for the container, causing systemd to pass the line immediately following ``ExecStart`` as the command. The recommended replacement for garethr/docker, puppetlabs/docker, does not support Archlinux. So, fork and fix the bug.
 
 ## [3.1.0] Released 2019-01-15
 
@@ -41,6 +42,7 @@
 - initial module creation
 - migration of a bunch of stuff from https://github.com/jantman/puppet-archlinux-macbookretina
 
+[3.2.0]: https://github.com/jantman/workstation-bootstrap/compare/3.1.0...3.2.0
 [3.1.0]: https://github.com/jantman/workstation-bootstrap/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/jantman/workstation-bootstrap/compare/2.0.0...3.0.0
 [2.0.0]: https://github.com/jantman/workstation-bootstrap/compare/1.1.0...2.0.0
