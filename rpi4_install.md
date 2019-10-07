@@ -65,3 +65,5 @@ Follow the [ArchLinuxARM Raspberry Pi 4 instructions](https://archlinuxarm.org/p
    4. If you're using a private GitHub repo for customization, generate SSH keys for root and add them as deploy keys on the repo.
    5. As root, in ``/root``: ``git clone https://github.com/jantman/workstation-bootstrap.git && cd workstation-bootstrap``
    6. ``./bin/run_r10k_puppet.sh | tee /root/puppet.$(date +%s)`` - run puppet and capture the output.
+25. ``userdel alarm && groupdel alarm && rm -Rf /home/alarm``
+26. Sync over my home directory and run Puppet again. Reboot.
