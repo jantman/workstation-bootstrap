@@ -70,7 +70,8 @@ It took me some trial-and-error to get everything right, mainly around initially
     4. Edit ``/etc/locale.gen`` as needed, run ``locale-gen``, and create ``/etc/locale.conf``
     5. Create ``/etc/hostname`` and set ``/etc/hosts`` entries accordingly.
     6. Install intel microcode: ``pacman -S intel-ucode``
-12. [Configure mkinitcpio per the dm-crypt instructions](https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#Configuring_mkinitcpio_2): edit the ``HOOKS`` line to match what's given in those instructions (order matters A LOT). Also ensure that after ``lvm2`` you add ``resume``. If you're using ``en_US.UTF-8`` you can leave out ``keymap`` and ``consolefont``. The final line should read: ``HOOKS=(base udev autodetect keyboard modconf block encrypt lvm2 resume filesystems keyboard fsck)``. For the Precision 5530 laptop, also set ``MODULES=(intel_agp i915)``. Save the file and then run ``mkinitcpio -p linux``.
+    7. Install other dependencies: ``pacman -S linux nvidia nvidia-utils nvidia-settings lvm2``
+12. [Configure mkinitcpio per the dm-crypt instructions](https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#Configuring_mkinitcpio_2): edit the ``HOOKS`` line to match what's given in those instructions (order matters A LOT). Also ensure that after ``lvm2`` you add ``resume``. If you're using ``en_US.UTF-8`` you can leave out ``keymap`` and ``consolefont``. The final line should read: ``HOOKS=(base udev autodetect keyboard modconf block encrypt lvm2 resume filesystems keyboard fsck)``. For the Precision 5530 laptop, also set ``MODULES=(intel_agp i915)``. Save the file and then run ``mkinitcpio -P``.
 13. Run ``passwd`` to create the root password.
 14. Install the GRUB bootloader:
     1. ``pacman -S grub efibootmgr``
