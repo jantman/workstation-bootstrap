@@ -102,3 +102,22 @@ After some initial problems with video, this has been fixed in current package v
     5. As root, in ``/root``: ``git clone https://github.com/jantman/workstation-bootstrap.git && cd workstation-bootstrap``
     6. ``./bin/run_r10k_puppet.sh | tee /root/puppet.$(date +%s)`` - run puppet and capture the output.
 21. Install some packages for the graphics: ``pacman -S linux-headers xf86-video-intel nvidia-settings xorg-xrandr tlp``
+
+## chroot
+
+If for some reason you need to boot from USB key again, mount the volumes, and enter the chroot:
+
+```
+cryptsetup open /dev/nvme0n1p3 cryptlvm
+mount /dev/LUKSvol/root /mnt
+swapon /dev/LUKSvol/swap
+mount /dev/nvme0n1p1 /mnt/efi
+mount /dev/nvme0n1p2 /mnt/boot
+arch-chroot /mnt
+# do what you need to
+exit
+umount -R /mnt
+swapoff /dev/LUKSvol/swap
+cryptsetup close cryptlvm
+reboot
+```
