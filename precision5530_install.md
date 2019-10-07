@@ -101,4 +101,4 @@ After some initial problems with video, this has been fixed in current package v
     4. If you're using a private GitHub repo for customization, generate SSH keys for root and add them as deploy keys on the repo.
     5. As root, in ``/root``: ``git clone https://github.com/jantman/workstation-bootstrap.git && cd workstation-bootstrap``
     6. ``./bin/run_r10k_puppet.sh | tee /root/puppet.$(date +%s)`` - run puppet and capture the output.
-21. Install some packages for the graphics: ``pacman -S linux-headers xf86-video-intel nvidia-dkms nvidia-settings xorg-xrandr tlp``
+21. Install some packages for the graphics: ``pacman -S linux-headers xf86-video-intel nvidia-settings xorg-xrandr tlp``
