@@ -118,6 +118,5 @@ arch-chroot /mnt
 exit
 umount -R /mnt
 swapoff /dev/LUKSvol/swap
-cryptsetup close cryptlvm
 reboot
 ```
