@@ -9,14 +9,11 @@ This is the process I used for installing Arch Linux on my work-issued Dell Prec
 
 ## Installation Notes
 
-It took me some trial-and-error to get everything right, mainly around initially getting a black screen (but obviously recognizing key input and Ctrl + Alt + Delete) after decrypting the drive. After _much_ (as in five days) of trial and error, I came up with the following:
-
-1. Perform the initial installation with an external monitor connected. This should work fine.
-2. Once everything else is ready, until [this kernel bug](https://bugs.freedesktop.org/show_bug.cgi?id=109959) is fixed, run a patched kernel to make the laptop display work (see last step, below).
+After some initial problems with video, this has been fixed in current package versions.
 
 ## Initial Installation
 
-1. Plug in power, wired Ethernet (via USB-C adapter). DO NOT PLUG IN Arch installation USB stick. Attach an external monitor (see last step for details).
+1. Plug in power, wired Ethernet (via USB-C adapter). DO NOT PLUG IN Arch installation USB stick.
 2. Power on the system. At the Dell splash screen, hold down the F12 key until you get to the one-time boot menu.
    * Other Options -> Change Boot Mode Settings
      * Change boot mode to: 2) UEFI Boot Mode, Secure Boot OFF. Proceed and apply the changes.
@@ -70,7 +67,7 @@ It took me some trial-and-error to get everything right, mainly around initially
     4. Edit ``/etc/locale.gen`` as needed, run ``locale-gen``, and create ``/etc/locale.conf``
     5. Create ``/etc/hostname`` and set ``/etc/hosts`` entries accordingly.
     6. Install intel microcode: ``pacman -S intel-ucode``
-    7. Install other dependencies: ``pacman -S linux nvidia nvidia-utils nvidia-settings lvm2``
+    7. Install other dependencies: ``pacman -S linux nvidia nvidia-utils nvidia-settings lvm2 dhcpcd openssh``
 12. [Configure mkinitcpio per the dm-crypt instructions](https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#Configuring_mkinitcpio_2): edit the ``HOOKS`` line to match what's given in those instructions (order matters A LOT). Also ensure that after ``lvm2`` you add ``resume``. If you're using ``en_US.UTF-8`` you can leave out ``keymap`` and ``consolefont``. The final line should read: ``HOOKS=(base udev autodetect keyboard modconf block encrypt lvm2 resume filesystems keyboard fsck)``. For the Precision 5530 laptop, also set ``MODULES=(intel_agp i915)``. Save the file and then run ``mkinitcpio -P``.
 13. Run ``passwd`` to create the root password.
 14. Install the GRUB bootloader:
@@ -96,8 +93,7 @@ It took me some trial-and-error to get everything right, mainly around initially
       * Click the "GRUB" entry in the boxes at the top right, and move it to be the first option (using the arrow buttons).
 17. "Apply" then "Exit". System will reboot.
 18. If all went well, you should get a GRUB menu and then the beginning of Arch boot. You'll be prompted for the LUKS passphrase; enter it and you should boot into Arch.
-    * If you have video issues, like me, and the screen goes black before or after entering your LUKS passphrase, reboot. At the GRUB prompt press "e" and append ``nomodeset`` to the ``linux`` line. This will work as a temporary fix until video is set up properly.
-19. Connect to your network and get DHCP (``systemctl start dhcpcd@INTERFACE-NAME``).
+19. Connect to your network and get DHCP (``systemctl start dhcpcd@INTERFACE-NAME``). If you want to continue with the following steps over ssh, ``echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && systemctl start sshd``.
 20. Continue on with the Puppetized installation process per [Arch Linux in README.md](https://github.com/jantman/workstation-bootstrap/blob/master/README.md#arch-linux):
     1. Do a full update: ``pacman -Syu``
     2. ``pacman -S base-devel puppet git lsb-release ruby`` - when prompted, install the whole base-devel group
@@ -106,4 +102,3 @@ It took me some trial-and-error to get everything right, mainly around initially
     5. As root, in ``/root``: ``git clone https://github.com/jantman/workstation-bootstrap.git && cd workstation-bootstrap``
     6. ``./bin/run_r10k_puppet.sh | tee /root/puppet.$(date +%s)`` - run puppet and capture the output.
 21. Install some packages for the graphics: ``pacman -S linux-headers xf86-video-intel nvidia-dkms nvidia-settings xorg-xrandr tlp``
-22. Until [freedesktop.org bug 109959 – REGRESSION: black screen with linux 5.0 when starting X](https://bugs.freedesktop.org/show_bug.cgi?id=109959) is fixed and released, 5.x kernels will fail to detect the laptop screen (eDP). To fix this, apply the kernel patch listed in that bug or install ``linux-precision5530-headers`` and ``linux-precision5530`` from [my Arch repo](http://archrepo.jasonantman.com/current/index.html) ([source repo](https://github.com/jantman/arch-pkgbuilds/tree/master/linux-precision5530)). Once this bug is fixed in the Arch kernel, you can switch back to that and also switch from ``nvidia-dkms`` to ``nvidia`` (the DKMS driver is required for the custom kernel).
