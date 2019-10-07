@@ -15,7 +15,6 @@ archlinux_workstation::ssh::allow_users:
   - jantman
 archlinux_workstation::user_groups:
   - sys
-  - bumblebee
 classes:
   - privatepuppet
 remove_classes:
