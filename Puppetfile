@@ -24,7 +24,7 @@ mod 'puppetlabs/stdlib', '4.10.0'
 mod 'saz/sudo', '4.2.0' # dependency of jantman/archlinux_workstation
 mod 'saz/ssh', '3.0.1' # dependency of jantman/archlinux_macbookretina
 mod 'puppetlabs/concat', '2.2.1' # dependency of saz/ssh
-mod 'puppetlabs/firewall', '1.8.0'
+mod 'puppetlabs/firewall', '1.15.3'
 mod 'puppetlabs/vcsrepo', '1.3.1'
 mod 'nanliu/staging', '1.0.3'
 mod 'duritong/sysctl', '0.0.11' # dependency of jantman/archlinux_macbookretina
