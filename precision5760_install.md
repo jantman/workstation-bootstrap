@@ -2,7 +2,7 @@
 
 This documents my installation process on my new Dell Precision 5760 laptop, which came factory installed with Dell's Ubuntu 20.04.2 LTS image (kernel 5.10.0-1020-oem).
 
-The main goal is to install my standard Arch Linux desktop environment, along with enabling TCG/OPAL self-encrypting drive (SED) on the Kioxia KXG70ZNV1T02 NVMe SSD and UEFI Secure Boot.
+The main goal is to install my standard Arch Linux desktop environment, along with UEFI Secure Boot and TCG/OPAL self-encrypting drive (SED) on the SSD. I originally purchased the laptop with (due to either confusion or a mis-click) a _non self-encrypting_ Kioxia KXG70ZNV1T02 NVMe SSD. After receiving the laptop and discovering this, I swapped it out for a Samsung 990 Pro 2TB Gen 4 NVMe SSD (MZ-V9P2T0B/AM) from MicroCenter that supports OPAL 2.
 
 ## Pre-Installation / Hardware Delivery
 
@@ -58,35 +58,18 @@ The main goal is to install my standard Arch Linux desktop environment, along wi
       1. `cp bootx64.efi /mnt/temp/efi/boot/bootx64.efi`
       1. `sync ; sync ; umount /mnt/temp`
       1. `rm bootx64.efi`
-   1. **Modification from instructions:** Do a similar thing for Drive-Trust-Alliance's [RESCUE64.img.gz](https://github.com/Drive-Trust-Alliance/sedutil/wiki/Executable-Distributions) (in this case I'm using the [1.20.0](https://github.com/Drive-Trust-Alliance/exec/releases/tag/1.20.0) version), gunzip it, and then sign its components:
-      1. `fdisk -l RESCUE64.img` - verify 512-byte sectors and partition start of 2048. If different, adjust the offset in the mount command below
-      1. We need to add ~50MB of space to the rescue image, to add our signed PBA image to the filesystem:
-         1. `dd if=/dev/zero bs=1M count=50 >> RESCUE64.img`
-         1. `parted RESCUE64.img` - tell it to fix the GPT to use all of the space, then quit and re-enter. `resizepart 1 250000s` and then `quit`
-         1. `fatresize -s 126M -n 1 RESCUE64.img`
-      1. `mount -t msdos -o loop,rw,uid=$(id -u),gid=$(id -g),offset=1048576 RESCUE64.img /mnt/temp`
-      1. `cp /mnt/temp/efi/boot/bootx64.efi . && cp /mnt/temp/efi/boot/bzimage .`
-      1. `sbsign --key ISK.key --cert ISK.pem bootx64.efi && mv bootx64.efi.signed bootx64.efi && sbsign --key ISK.key --cert ISK.pem bzimage && mv bzimage.signed bzimage`
-      1. `cp bootx64.efi /mnt/temp/efi/boot/bootx64.efi && cp bzimage /mnt/temp/efi/boot/bzimage`
-      1. Copy our signed PBA into the image:
-          1. `cp /mnt/temp/efi/boot/rootfs~1.xz .`
-          1. `xz -d rootfs~1.xz`
-          1. `mkdir tmp && cd tmp`
-          1. `cpio -idm < ../rootfs~1`
-          1. `cp ../UEFI64.img usr/sedutil/`
-          1. `find . | cpio -o > ../rootfs-new`
-          1. `cd .. && rm -Rf tmp`
-          1. `xz -z rootfs-new`
-          1. `cp rootfs-new.xz /mnt/temp/efi/boot/rootfs~1.xz`
-      1. `sync ; sync ; umount /mnt/temp`
+   1. Write the resulting `UEFI64.img` to a USB flash drive.
 1. Continue on to the actual SED setup per the [Drive-Trust-Alliance wiki](https://github.com/Drive-Trust-Alliance/sedutil/wiki/Encrypting-your-drive):
-   1. Write our custom `RESCUE64.img` image to a USB flash drive with: `dd bs=4M conv=fsync status=progress oflag=direct if=RESCUE64.img of=/dev/sdX; sync; sync`
+   1. Download Drive-Trust-Alliance's [RESCUE64.img.gz](https://github.com/Drive-Trust-Alliance/sedutil/wiki/Executable-Distributions) (in this case I'm using the [1.20.0](https://github.com/Drive-Trust-Alliance/exec/releases/tag/1.20.0) version), gunzip it, and write it to a USB flash drive with: `dd bs=4M conv=fsync status=progress oflag=direct if=RESCUE64.img of=/dev/sdX; sync; sync`
    1. Power up, enter BIOS, ensure that SecureBoot is disabled.
    1. Plug the rescue image USB flash drive in and exit BIOS. On reboot, press F12 for the one-time boot menu, select the UEFI USB 3.0 drive, and enter admin password to boot from it.
-   1. We get some text about filenames and then a black screen.
-   1. Write the unmodified, original, upstream `RESCUE64.img` 1.20.0 image to another USB flash drive, swap them, hold power button to turn off, turn back on and try F12 boot to USB again.
-   1. Ok, that worked. We get a DriveTrust login prompt. Log in as `root` and get dropped into a shell.
-   
+   1. We get a DriveTrust login prompt. Log in as `root` and get dropped into a shell. Plug in the other USB drive and `mount /dev/sdb1 /mnt/temp`
+   1. `sedutil-cli --scan` and confirm that the drive is OPAL2 compliant (`12` in the second column, indicating OPAL 1.0 and 2.0).
+   1. `linuxpba` and verify that in the output, the drive is listed as `is OPAL NOT LOCKED`
+   1. `sedutil-cli --initialsetup debug /dev/nvme0` - this throws an error with `method status code NOT_AUTHORIZED` and `takeOwnership failed`. [this issue](https://github.com/Drive-Trust-Alliance/sedutil/issues/382) seems to indicate that the new Samsung disks are a bit messed up from the factory. Running `sedutil-cli --printDefaultPassword /dev/nvme0` shows an MSID of a very very long, random-looking string.
+   1. `export PSWD=$(sedutil-cli --printDefaultPassword /dev/nvme0 | awk '{print $2}'); echo $PSWD`
+   1. Try again: `sedutil-cli --initialsetup $PSWD /dev/nvme0` - same error.
+   1. Aaaand... now find [sedutil-cli --initialsetup fails with “NOT\_AUTHORIZED” on uniniatilized drive when booting with UEFI. · Issue #291 · Drive-Trust-Alliance/sedutil](https://github.com/Drive-Trust-Alliance/sedutil/issues/291) which implies that I needed to capture the PSID off of the new SSD before installing it. So, after all that, I need to open the _brand_ new laptop up _again_.
 1. Finally, provision our Secure Boot keys and enable Secure Boot and try to boot:
    1. TBD.
 1. Try booting from the sedutil Rescue image; if we signed it correctly, it should work.
