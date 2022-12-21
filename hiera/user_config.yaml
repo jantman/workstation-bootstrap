@@ -10,4 +10,4 @@ username: jantman
 firewall_purge: false
 classes:
   - privatepuppet
-remove_classes:
+remove_classes: []
