@@ -8,14 +8,6 @@
 username: jantman
 # whether or not to purge all firewall rules at the global/firewall module level
 firewall_purge: false
-archlinux_workstation::makepkg_packager: Jason Antman <jason@jasonantman.com>
-archlinux_workstation::ssh::extra_options:
-  PubkeyAcceptedKeyTypes: +ssh-dss,ssh-rsa
-archlinux_workstation::ssh::allow_users:
-  - jantman
-archlinux_workstation::user_groups:
-  - sys
 classes:
   - privatepuppet
 remove_classes:
-  - archlinux_workstation::all
