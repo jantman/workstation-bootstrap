@@ -124,18 +124,18 @@ If not already done, set up a fixed IP lease for a USB-C Ethernet adapter, and s
          1. `t` to change type of partition 3; change to `23`, `Linux root (x86-64)`
          1. `p` to verify the partition layout; it should look like this:
 
-               Disk /dev/nvme0n1: 1.82 TiB, 2000398934016 bytes, 3907029168 sectors
-               Disk model: Samsung SSD 990 PRO 2TB                 
-               Units: sectors of 1 * 512 = 512 bytes
-               Sector size (logical/physical): 512 bytes / 512 bytes
-               I/O size (minimum/optimal): 512 bytes / 512 bytes
-               Disklabel type: gpt
-               Disk identifier: E4676A78-F194-4A4E-A5D1-F9A330B88555
+                  Disk /dev/nvme0n1: 1.82 TiB, 2000398934016 bytes, 3907029168 sectors
+                  Disk model: Samsung SSD 990 PRO 2TB                 
+                  Units: sectors of 1 * 512 = 512 bytes
+                  Sector size (logical/physical): 512 bytes / 512 bytes
+                  I/O size (minimum/optimal): 512 bytes / 512 bytes
+                  Disklabel type: gpt
+                  Disk identifier: E4676A78-F194-4A4E-A5D1-F9A330B88555
 
-               Device             Start        End    Sectors  Size Type
-               /dev/nvme0n1p1      2048    2099199    2097152    1G EFI System
-               /dev/nvme0n1p2   2099200  148899839  146800640   70G Linux swap
-               /dev/nvme0n1p3 148899840 3907028991 3758129152  1.8T Linux root (x86-64)
+                  Device             Start        End    Sectors  Size Type
+                  /dev/nvme0n1p1      2048    2099199    2097152    1G EFI System
+                  /dev/nvme0n1p2   2099200  148899839  146800640   70G Linux swap
+                  /dev/nvme0n1p3 148899840 3907028991 3758129152  1.8T Linux root (x86-64)
 
          1. `w` to write table to disk
    1. Format the partitions:
@@ -165,15 +165,15 @@ If not already done, set up a fixed IP lease for a USB-C Ethernet adapter, and s
          1. `efibootmgr --disk /dev/nvme0n1 --part 1 --create --label "Arch" --loader /vmlinuz-linux --unicode 'root=UUID=2d94451b-9dd7-4be3-8475-b2ba420face8 resume=UUID=f4021375-be08-4aea-8538-fef65d4881d7 rw initrd=\intel-ucode.img initrd=\initramfs-linux.img'`
          1. The output of that second command now becomes:
 
-               BootCurrent: 0001
-               Timeout: 0 seconds
-               BootOrder: 0005,0000,0001,0004,0002,0003
-               Boot0000* Arch-Fallback HD(1,GPT,0ff51f6d-e5cf-1849-b047-12fb1ad3437d,0x800,0x200000)/File(\vmlinuz-linux)root=UUID=2d94451b-9dd7-4be3-8475-b2ba420face8 resume=UUID=f4021375-be08-4aea-8538-fef65d4881d7 rw initrd=\intel-ucode.img initrd=\initramfs-linux-fallback.img
-               Boot0001* UEFI USB DISK 3.0 071C2A29A51FEB16    PciRoot(0x0)/Pci(0xd,0x0)/USB(4,0)/USB(0,0)/HD(2,MBR,0x9af9df7e,0x191800,0x7800)/File(\EFI\Boot\BootX64.efi)걎脈鼑䵙຅᫢ⱒ뉙
-               Boot0002* PEBOOT        HD(1,GPT,6324d913-bef4-405b-90ce-2787b3518557,0x800,0x1a9000)/File(\EFI\PEBoot\bootx64.efi)
-               Boot0003* Linux Firmware Updater        HD(1,GPT,6324d913-bef4-405b-90ce-2787b3518557,0x800,0x1a9000)/File(\EFI\ubuntu\shimx64.efi) File(.\fwupdx64.efi)
-               Boot0004* UEFI USB DISK 3.0 071C2A29A51FEB16 2  PciRoot(0x0)/Pci(0xd,0x0)/USB(4,0)/USB(0,0)/CDROM(1,0x191800,0x1e000)/File(\EFI\Boot\BootX64.efi)걎脈鼑䵙຅᫢ⱒ뉙
-               Boot0005* Arch  HD(1,GPT,0ff51f6d-e5cf-1849-b047-12fb1ad3437d,0x800,0x200000)/File(\vmlinuz-linux)root=UUID=2d94451b-9dd7-4be3-8475-b2ba420face8 resume=UUID=f4021375-be08-4aea-8538-fef65d4881d7 rw initrd=\intel-ucode.img initrd=\initramfs-linux.img
+                  BootCurrent: 0001
+                  Timeout: 0 seconds
+                  BootOrder: 0005,0000,0001,0004,0002,0003
+                  Boot0000* Arch-Fallback HD(1,GPT,0ff51f6d-e5cf-1849-b047-12fb1ad3437d,0x800,0x200000)/File(\vmlinuz-linux)root=UUID=2d94451b-9dd7-4be3-8475-b2ba420face8 resume=UUID=f4021375-be08-4aea-8538-fef65d4881d7 rw initrd=\intel-ucode.img initrd=\initramfs-linux-fallback.img
+                  Boot0001* UEFI USB DISK 3.0 071C2A29A51FEB16    PciRoot(0x0)/Pci(0xd,0x0)/USB(4,0)/USB(0,0)/HD(2,MBR,0x9af9df7e,0x191800,0x7800)/File(\EFI\Boot\BootX64.efi)걎脈鼑䵙຅᫢ⱒ뉙
+                  Boot0002* PEBOOT        HD(1,GPT,6324d913-bef4-405b-90ce-2787b3518557,0x800,0x1a9000)/File(\EFI\PEBoot\bootx64.efi)
+                  Boot0003* Linux Firmware Updater        HD(1,GPT,6324d913-bef4-405b-90ce-2787b3518557,0x800,0x1a9000)/File(\EFI\ubuntu\shimx64.efi) File(.\fwupdx64.efi)
+                  Boot0004* UEFI USB DISK 3.0 071C2A29A51FEB16 2  PciRoot(0x0)/Pci(0xd,0x0)/USB(4,0)/USB(0,0)/CDROM(1,0x191800,0x1e000)/File(\EFI\Boot\BootX64.efi)걎脈鼑䵙຅᫢ⱒ뉙
+                  Boot0005* Arch  HD(1,GPT,0ff51f6d-e5cf-1849-b047-12fb1ad3437d,0x800,0x200000)/File(\vmlinuz-linux)root=UUID=2d94451b-9dd7-4be3-8475-b2ba420face8 resume=UUID=f4021375-be08-4aea-8538-fef65d4881d7 rw initrd=\intel-ucode.img initrd=\initramfs-linux.img
 
       1. Exit the chroot with `exit`
    1. Unmount all partitions with `umount -R /mnt`
