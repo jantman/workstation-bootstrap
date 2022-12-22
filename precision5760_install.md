@@ -4,6 +4,8 @@ This documents my installation process on my new Dell Precision 5760 laptop, whi
 
 The main goal is to install my standard Arch Linux desktop environment, along with UEFI Secure Boot and TCG/OPAL self-encrypting drive (SED) on the SSD. I originally purchased the laptop with (due to either confusion or a mis-click) a _non self-encrypting_ Kioxia KXG70ZNV1T02 NVMe SSD. After receiving the laptop and discovering this, I swapped it out for a Samsung 990 Pro 2TB Gen 4 NVMe SSD (MZ-V9P2T0B/AM) from MicroCenter that supports OPAL 2.
 
+*Note:* I'd originally _wanted_ to use Wayland on this new machine instead of an Xorg server. Unfortunately, the list of [Plasma/Wayland Showstoppers - KDE Community Wiki](https://community.kde.org/Plasma/Wayland_Showstoppers) and the fact that SDDM doesn't have released Wayland support yet, is going to keep me on X for a while longer.
+
 ## IMPORTANT - Aftermarket Samsung SSD
 
 Before installing a self-encrypting SSD, make **sure** to record the PSID from the label on the drive. This is needed for some (e.g. my Samsung 990 Pro) drives to enable encryption, and if you don't record it first, you'll have to open the laptop up again to get the PSID.
