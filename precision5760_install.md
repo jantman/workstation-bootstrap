@@ -8,7 +8,7 @@ The main goal is to install my standard Arch Linux desktop environment, along wi
 
 Before installing a self-encrypting SSD, make **sure** to record the PSID from the label on the drive. This is needed for some (e.g. my Samsung 990 Pro) drives to enable encryption, and if you don't record it first, you'll have to open the laptop up again to get the PSID.
 
-## Step 1 - Pre-Installation / Hardware Delivery
+## Part 1 - Pre-Installation / Hardware Delivery
 
 1. Power up the laptop and boot into the default Ubuntu install, configure it. Do this connected to isolated guest WiFi.
 1. Test hardware - speakers, mic, webcam, bluetooth (for some reason, scan doesn't show any devices).
@@ -49,7 +49,7 @@ Before installing a self-encrypting SSD, make **sure** to record the PSID from t
 1. Shut down/reboot.
 1. On a working machine, [download](https://archlinux.org/download/) the latest Arch Linux install media, verify the checksum and signature, and write it to a USB drive.
 
-## Step 2 - Self-Encrypting Drive (SED) Setup
+## Part 2 - Self-Encrypting Drive (SED) Setup
 
 1. Prepare for setting up the self-encrypting drive (SED) with Secure Boot support per the instructions in [Drive-Trust-Alliance/sedutil issue #259: HowTo SecureBoot support](https://github.com/Drive-Trust-Alliance/sedutil/issues/259)
    1. Create a temporary directory on a computer with `openssl`, `efitools`, `fatresize` and `sbsigntool`.
@@ -96,7 +96,7 @@ Before installing a self-encrypting SSD, make **sure** to record the PSID from t
    1. Hard power-off the laptop by holding down the power button until it shuts off.
    1. Unplug both USB drives, plug in the Arch install media, and then power the laptop on again. If all goes well, we'll get a Dell splash screen and then the PBA unlock prompt. Enter the password and it will show the drive unlocking and then "Starting OS" and then after a few seconds it will reboot and show the Arch live media bootloader menu. Select "System shutdown" and the system will power off.
 
-## Step 3 - Arch Installation
+## Part 3 - Arch Installation
 
 Beginning from the previous steps, we have the Arch live media in the USB port. Power on, unlock the drive via PBA prompt, boot into the Arch installer.
 
@@ -189,9 +189,60 @@ If not already done, set up a fixed IP lease for a USB-C Ethernet adapter, and s
    1. `cd /root && git clone https://github.com/jantman/workstation-bootstrap.git && cd workstation-bootstrap`
    1. `./bin/run_r10k_puppet.sh --noop` and ensure that it's not going to do more than setting up iptables, my user account and group, and the `/root/bin` puppet stuff
    1. Run again without the `--noop`
-1. At this point, the rest of installation and configuration (other than actually setting up Secure Boot) is done via puppet. Run puppet until it succeeds and I'm happy. For a history of changes, see the commits in my private puppet repo subsequent to `7d2a48f`.
+1. At this point, the rest of installation and configuration (other than actually setting up Secure Boot) is done via puppet (starting at `7d2a48f` in my private puppet repo). First just get some minimal config with my user, dotfiles, sudo, and ssh config. Then we'll move on to Secure Boot setup before we invest time in graphics, GUI, etc.
 
-## Step 4 - Secure Boot Setup
+## Part 4 - Secure Boot Setup
 
-1. Finally, provision our Secure Boot keys and enable Secure Boot and try to boot:
-   1. TBD.
+1. Copy the Secure Boot keys and files that were created in [Part 2 - Self-Encrypting Drive (SED) Setup](#part-2---self-encrypting-drive-sed-setup) to a USB drive that will be stored somewhere secure for the life of the laptop.
+1. As root, on the laptop, back up the current Secure Boot keys: `mkdir /root/original-efi-keys && cd /root/original-efi-keys && efi-readvar -v PK -o old_PK.esl && efi-readvar -v KEK -o old_KEK.esl && efi-readvar -v db -o old_db.esl && efi-readvar -v dbx -o old_dbx.esl` (note we're told that the PK variable was empty).
+1. Put the USB drive in the laptop; copy the files from step 1 to the laptop and the backups from step 2 to the USB drive.
+1. `pacman -S sbupdate-git` in order to have `/etc/efi-keys` created
+1. In the directory containing our new SecureBoot keys: `for i in db.* KEK.* PK.*; do install -o root -g root -m 0600 $i /etc/efi-keys/$i; done && install -o root -g root -m 0600 ISK.pem /etc/efi-keys/db.pem && install -o root -g root -m 0600 ISK.key /etc/efi-keys/db.key && ln -s /etc/efi-keys/db.pem /etc/efi-keys/db.crt`
+1. Create the required DER certificates for each: `cd /etc/efi-keys && for i in PK KEK db; do openssl x509 -outform DER -in $i.pem -out $i.cer; done`
+1. Copy `/etc/efi-keys` to the same USB drive we've been using.
+1. Configure `/etc/sbupdate.conf` mainly disabling `SPLASH` and setting the kernel command line.
+1. Run puppet again to create/update that config file.
+1. Run `sbupdate` to generate the initial signed image. This should succeed and create `/boot/EFI/Arch/linux-signed.efi`
+1. Add a boot entry for that: `efibootmgr --disk /dev/nvme0n1 --part 1 --create --label "SecureArch" --loader /EFI/Arch/linux-signed.efi --unicode`
+1. Shut down the system (full power down)
+1. Turn the system back on, unlock the drives, F12 and boot the new "SecureArch" entry. This boots and gives the usual nouveau errors but a working system.
+1. Ok, let's try enabling Secure Boot. Reboot the machine again and F12. Enter BIOS Setup and unlock and go to the Boot Configuration page.
+   1. Turn Secure Boot on, but leave in Audit mode.
+   1. Under Expert Key Management, Enable Custom Mode -> On.
+   1. Delete All Keys
+   1. DB, Replace from file. Select `db.esl` and Submit.
+   1. KEK, Replace from file. Select `KEK.esl` and Submit.
+   1. PK, Replace from file. Select `PK.esl` and Submit.
+   1. Apply Changes and Exit. System will reboot.
+1. It seems to hang at the Dell splash screen for a LONG time, but then boots to the PBA, unlocks the drives, and then boots to Arch.
+1. `bootctl status` tells us that we're booted to the signed image, but that Secure Boot is disabled (audit mode).
+1. Reboot again, F12, Enter Setup, unlock, Boot Configuration -> Secure Boot Mode -> Deployed Mode. Now this pops up with a message saying, "Changing the Secure Boot Mode will enroll the default Dell Platform Key. If you wish to enroll a custom PK use Expert Key Management." Ok, do that. Again, re-replace the db and KEK keys. Apply changes. Replace the PK key. Apply changes, Exit.
+1. We get SupportAssistant On-board Diagnostics with an error message, "Operating System Loader has no signature. Incompatible with SecureBoot. All bootable devices failed Secure Boot verification." Well, so much for "Audit Mode" being _any_ different from disabled. Select Shutdown, power the system back on, attempt to launch "PEBOOT" (whatever that is... I _thought_ it was the PBA). No luck. Attempt booting the Samsung drive. No luck. Enter BIOS setup, unlock, Boot Configuration, set it back to Audit Mode, Apply, Exit.
+   1. PBA works, unlock drive. Arch boots. Now, let's do some investigation...
+   1. `bootctl status` once again says disabled (audit)
+   1. `mkdir /tmp/efi-current && cd /tmp/efi-current && efi-readvar -v PK -o curr_PK.esl && efi-readvar -v KEK -o curr_KEK.esl && efi-readvar -v db -o curr_db.esl && efi-readvar -v dbx -o curr_dbx.esl` - this tells us that all variables have no entries.
+   1. In our working directory from Part 2, `sbverify --cert ISK.pem /boot/EFI/Arch/linux-signed.efi` and `sbverify --cert ISK.pem bootx64.efi`; both report "Signature verification OK". So, they _are_ signed, and with the right key. So then it seems like for some reason the BIOS didn't take my keys...
+   1. **OUT OF BAND:** While I'm researching this, take a break, and rsync over my home directory from the old laptop.
+1. Let's try this again with the automated thing... right now we're in Audit mode with all keys removed.
+   1. Reboot, F12, BIOS Setup, unlock. Boot Configuration -> Secure Boot. Set to Deployed Mode, apply changes. Delete all keys, apply changes, exit.
+   1. Unlock drive via PBA on reboot.
+   1. System boots into Arch with the usual nouveau errors.
+   1. `bootctl status` - once again, Secure Boot says `disabled (audit)`
+   1. Create directory structure for sbkeysync: `mkdir -p /etc/secureboot/keys/{db,dbx,KEK,PK} && chown -R root:root /etc/secureboot && chmod -R 0700 /etc/secureboot`
+   1. Put the files there: `for i in db KEK PK; do install -m 0600 -o root -g root /etc/efi-keys/${i}.auth /etc/secureboot/keys/${i}/${i}.auth; done; find /etc/secureboot`
+   1. Verify changes to be made: `sbkeysync --pk --dry-run --verbose`
+   1. Enroll the db and KEK keys: `sbkeysync --verbose` - this succeeds
+   1. Enroll the platform key: `sbkeysync --verbose --pk` - this gives a permission denied error
+   1. Per the Arch Wiki article, now try `efi-updatevar -f /etc/secureboot/keys/PK/PK.auth PK` - this fails with Operation not permitted
+   1. Per a modification to the Arch Wiki article, run `cat > /sys/class/firmware-attributes/dell-wmi-sysman/authentication/Admin/current_password`, enter your BIOS password, then Ctrl+D. That gives `No such file or directory`. 
+   1. Retry the `sbkeysync` and `efi-updatevar` commands, but both fail again.
+   1. Put the USB drive back in and reboot.
+   1. Reboot, F12, BIOS Setup, unlock. Boot Configuration -> Secure Boot. We find it set back to Audit Mode. Set to Deployed Mode, apply changes.
+   1. **DO NOT** Delete All Keys
+   1. DB, Replace from file. Select `db.auth` and Submit. Apply changes.
+   1. KEK, Replace from file. Select `KEK.auth` and Submit. Apply changes.
+   1. PK, Replace from file. Select `PK.auth` and Submit. Apply changes.
+   1. Exit. System will reboot.
+   1. We get the PBA to unlock the disks, so that's a really good sign. Unlock the disks. It says it's booting the OS, and then shows a blank screen for a _long_ time.
+   1. Dell splash screen... and then the scrolling nouveau errors that let us know we're booting Arch.
+   1. `bootctl status` finally shows us `Secure Boot: enabled (deployed)`
