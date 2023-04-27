@@ -16,7 +16,7 @@ forge 'forge.puppetlabs.com'
 mod 'workstation_bootstrap', :local => true
 
 ### module dependencies ###
-mod 'puppetlabs/stdlib', '4.10.0'
+mod 'puppetlabs/stdlib', '4.25.1'
 mod 'saz/sudo', '4.2.0' # dependency of jantman/archlinux_workstation
 mod 'saz/ssh', '3.0.1' # dependency of jantman/archlinux_macbookretina
 mod 'puppetlabs/concat', '2.2.1' # dependency of saz/ssh
