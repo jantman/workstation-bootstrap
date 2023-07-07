@@ -44,5 +44,7 @@ mod 'puppetlabs/apt', '2.3.0' # dependency of docker
 mod 'privatepuppet',
   :git => 'git@github.com:jantman/privatepuppet.git'
 
-mod 'puppetlabs/mysql', '5.4.0'
+mod 'puppetlabs/mysql',
+  :git => 'git@github.com:jantman/puppetlabs-mysql.git'
+  :ref => 'jantman'
 mod 'cyberious/apm', '0.1.1'
