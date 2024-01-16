@@ -22,7 +22,7 @@ mod 'saz/ssh', '3.0.1' # dependency of jantman/archlinux_macbookretina
 mod 'puppetlabs/concat', '6.4.0' # dependency of saz/ssh
 mod 'puppetlabs/firewall', '2.7.0'
 mod 'puppetlabs/vcsrepo', '1.3.1'
-mod 'nanliu/staging', '1.0.3'
+mod 'puppet/archive', '7.1.0'
 mod 'duritong/sysctl', '0.0.11' # dependency of jantman/archlinux_macbookretina
 mod 'puppetlabs/inifile', '1.4.2' # dependency of jantman/archlinux_macbookretina
 # Note: the last release of garethr/docker, 5.3.0, generates systemd unit files
