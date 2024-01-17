@@ -1,6 +1,10 @@
-# workstation-bootstrap
+# DEPRECATED - workstation-bootstrap
 
-[![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/0.1.0/active.svg)](http://www.repostatus.org/#active)
+[![Project Status: Unsupported – The project has reached a stable, usable state but the author(s) have ceased all work on it. A new maintainer may be desired.](https://www.repostatus.org/badges/latest/unsupported.svg)](https://www.repostatus.org/#unsupported)
+
+# DEPRECATION NOTICE
+
+This is archaic. As of now (January 2024) I'm not even using it myself anymore. You probably shouldn't either.
 
 #### Table of Contents
 
